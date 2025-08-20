@@ -16,9 +16,9 @@ export default function Badge({ icon: Icon, color, label, selectionOption, isSel
     return (
         <div
             onClick={() => (setRightPanelOption(selectionOption))}
-            className={`flex gap-x-1 items-center hover:bg-slate-600 px-2 py-0.5 rounded-sm cursor-pointer transition-all duration-200 ${isSelected && "bg-slate-600"}`}>
-            <Icon className={`size-5 ${color} `} />
-            <p className={`text-sm ${isSelected ? "text-white" : "text-slate-300"}`}>{label}</p>
+            className={`flex gap-x-1 items-center hover:bg-slate-600 px-2 py-0.5 rounded-sm cursor-pointer transition-all duration-200 `}>
+            <Icon className={`size-5 ${color} ${isSelected ? "opacity-100" : "opacity-60"} `} />
+            <p className={`text-sm ${isSelected && "font-medium"} ${isSelected ? "text-white" : "text-slate-300"}`}>{label}</p>
         </div>
     );
 }

@@ -36,6 +36,19 @@ interface CodeContextType {
 
     isOutputCorrect: boolean;
     setIsOutputCorrect: (value: boolean) => void;
+
+    aiPrompt: string | undefined;
+    setAiPrompt: (value: string | undefined) => void;
+
+    aiResponse: string | undefined;
+    setAiResponse: (value: string | undefined) => void;
+
+    isAiLoading: boolean;
+    setIsAiLoading: (value: boolean) => void;
+
+    aiHints: string | undefined;
+    setAiHints: (value: string | undefined) => void;
+
 }
 
 const CodeContext = createContext<CodeContextType | undefined>(undefined);
@@ -56,8 +69,12 @@ export function CodeProvider ({children}: CodeProviderProps) {
     const [userCodeOutput, setUserCodeOutput] = useState<string | undefined>("");
     const [hasOutput, setHasOutput] = useState(false);
     const [isOutputCorrect, setIsOutputCorrect] = useState(false);
+    const [aiPrompt, setAiPrompt] = useState<string | undefined>("");
+    const [aiResponse, setAiResponse] = useState<string | undefined>("");
+    const [isAiLoading, setIsAiLoading] = useState<boolean>(false);
+    const [aiHints, setAiHints] = useState<string | undefined>(undefined);
 
-    
+
     const value = {
         code,
         setCode,
@@ -80,7 +97,15 @@ export function CodeProvider ({children}: CodeProviderProps) {
         hasOutput, 
         setHasOutput,
         isOutputCorrect, 
-        setIsOutputCorrect
+        setIsOutputCorrect,
+        aiPrompt, 
+        setAiPrompt,
+        aiResponse, 
+        setAiResponse,
+        isAiLoading, 
+        setIsAiLoading,
+        aiHints, 
+        setAiHints
     }
 
     return (

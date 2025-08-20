@@ -3,6 +3,8 @@ import { RotateCcw, Sparkles, Terminal, TerminalSquare } from "lucide-react";
 import OutputDisplay from "./OutputDisplay";
 import Badge from "./Badge";
 import OutputComparison from "./OutputComparison";
+import AskAIBlocl from "./AskAIBlock";
+import AskAIBlock from "./AskAIBlock";
 
 
 //this is the starting/parent compoentnt of all right panel components
@@ -26,8 +28,7 @@ export default function RightPanel () {
     }
 
     return (
-        <div className={`flex flex-col bg-slate-800 ${textColor} h-full w-full rounded-md border-1 border-slate-600`}>
-
+        <div className={`h-full w-full flex flex-col items-center justify-between bg-slate-800 ${textColor} rounded-md border-1 border-slate-600`}>
             <div className="py-1 w-full bg-slate-700 rounded-t-[5px] px-2 flex items-center justify-between">
                 <div className="flex gap-x-4">
                     <Badge icon={Terminal} color={"text-blue-500"} label={"Output"} selectionOption={"output"} isSelected={rightPanelOption === "output"} />
@@ -44,9 +45,14 @@ export default function RightPanel () {
                     </button>
                 </div>
             </div>
-            {
-                rightPanelOption === "output" ? <OutputDisplay /> : <OutputComparison />
-            }
+            <div className="h-full w-full overflow-y-auto">
+                {
+                    rightPanelOption === "output" && <OutputDisplay /> ||
+                    rightPanelOption === "compare" && <OutputComparison /> ||
+                    rightPanelOption === "askAI" && <AskAIBlock />
+                }
+            </div>
+            
             
 
         </div>

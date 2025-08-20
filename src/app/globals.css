@@ -145,3 +145,32 @@
   scrollbar-width: thin;
   scrollbar-color: #475569 #334155; /* thumb color, track color */
 }
+
+
+/* aiLoader */
+@keyframes rainbowBlur {
+  0% {
+  background-position: -200% 0;
+  }
+  100% {
+  background-position: 200% 0;
+  }
+}
+.animate-rainbowBlur {
+  background: linear-gradient(
+  90deg,
+  rgba(255, 0, 0, 0.8),
+  rgba(0, 255, 0, 0.8),
+  rgba(0, 0, 255, 0.8),
+  rgba(255, 0, 255, 0.8),
+  rgba(255, 0, 0, 0.8)
+  );
+  background-size: 300% 100%;
+  filter: blur(4px);
+  animation: rainbowBlur 8s linear infinite;
+}
+
+/* reset tailwind for AI-Response */
+.reset-tw, .reset-tw *{
+  all: revert !important
+}

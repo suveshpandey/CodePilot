@@ -34,7 +34,7 @@ export default function LeftPanel () {
                 <div className="flex gap-x-3">
                     <div className="flex gap-x-1 items-center">
                         <Code2 className="size-5 text-green-500" /> 
-                        <p className="text-md text-slate-200">Code</p>
+                        <p className="text-md text-slate-200 font-medium">Code</p>
                     </div>
                 </div>
                 <div className="flex gap-x-4">

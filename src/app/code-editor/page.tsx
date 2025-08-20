@@ -101,7 +101,7 @@ export default function CodeEditor() {
                 </PanelGroup>
             </div>
 
-            <div className="h-[5%] flex align-middle items-center justify-end">
+            <div className="h-[5%] flex align-middle items-center justify-end mb-2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ">
                 <button 
                     onClick={handleRunCode} 
                     disabled={isLoading}
@@ -114,11 +114,7 @@ export default function CodeEditor() {
                     )}
                     Run
                 </button>
-
             </div>
         </div>
-        
-    
     )
-
 }
