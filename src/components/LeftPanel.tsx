@@ -29,7 +29,7 @@ export default function LeftPanel () {
     }
 
     return (
-        <div className="overflow-hidden rounded-md h-full w-full border-1 border-slate-600 ">
+        <div className="h-[100%] w-full rounded-md border-1 border-slate-600 flex flex-col ">
             <div className="py-1 w-full bg-slate-700 rounded-t-[5px] px-2 flex items-center justify-between">
                 <div className="flex gap-x-3">
                     <div className="flex gap-x-1 items-center">
@@ -53,6 +53,7 @@ export default function LeftPanel () {
             </div>
             <Editor 
                 width="100%"
+                height="100%"
                 theme="vs-dark"
                 className="rounded-md active:border-slate-100"
                 value={code}

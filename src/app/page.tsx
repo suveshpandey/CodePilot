@@ -1,5 +1,5 @@
 // app/page.tsx
-import { Code2, Bot, Brain, Zap, Shield, Users, Sparkles, ChevronRight, Play } from 'lucide-react';
+import { Code2, Bot, Brain, Zap, Shield, Users, ChevronRight, Play } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -62,7 +62,7 @@ export default function Home() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 hover:border-indigo-800 transition-colors duration-300">
               <div className="bg-indigo-900/30 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
                 <Bot className="h-7 w-7 text-indigo-500" />
               </div>
@@ -73,7 +73,7 @@ export default function Home() {
             </div>
             
             {/* Feature 2 */}
-            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 hover:border-pink-900 transition-colors duration-300">
               <div className="bg-pink-900/30 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
                 <Code2 className="h-7 w-7 text-pink-500" />
               </div>
@@ -84,7 +84,7 @@ export default function Home() {
             </div>
             
             {/* Feature 3 */}
-            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 hover:border-emerald-800 transition-colors duration-300">
               <div className="bg-emerald-900/30 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
                 <Brain className="h-7 w-7 text-emerald-500" />
               </div>
@@ -95,7 +95,7 @@ export default function Home() {
             </div>
             
             {/* Feature 4 */}
-            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 hover:border-amber-800 transition-colors duration-300">
               <div className="bg-amber-900/30 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
                 <Zap className="h-7 w-7 text-amber-500" />
               </div>
@@ -106,7 +106,7 @@ export default function Home() {
             </div>
             
             {/* Feature 5 */}
-            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 hover:border-purple-800 transition-colors duration-300">
               <div className="bg-purple-900/30 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
                 <Shield className="h-7 w-7 text-purple-500" />
               </div>
@@ -117,7 +117,7 @@ export default function Home() {
             </div>
             
             {/* Feature 6 */}
-            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700">
+            <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 hover:border-cyan-800 transition-colors duration-300">
               <div className="bg-cyan-900/30 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
                 <Users className="h-7 w-7 text-cyan-500" />
               </div>

@@ -1,6 +1,5 @@
 "use client"
 
-import LanguageSelector from "@/components/LanguageSelector";
 import LeftPanel from "@/components/LeftPanel";
 import Loader from "@/components/Loader";
 import Navbar from "@/components/Navbar";
@@ -8,25 +7,22 @@ import RightPanel from "@/components/RightPanel";
 import { codeSnippets } from "@/constants";
 import { useAppContext } from "@/context/context";
 import { executeCode } from "@/lib";
-import { Language } from "@/types";
+import { CloudCheck, CloudFog, Upload } from "lucide-react";
 import { useEffect } from "react";
 import { BiSolidLeftArrow } from "react-icons/bi";
 
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { toast } from "sonner";
 
 
 export default function CodeEditor() {
     const {code, setCode, selectedLanguage, setSelectedLanguage, setOutput, setOutputError, isLoading, setIsLoading, setPartialError, userCodeInput} = useAppContext();
 
-    const onSelectLanguage = (language: Language) => {
-        setSelectedLanguage(language);
-        setCode(codeSnippets[language]);
-    }
-
     const handleRunCode = async () => {
 
-        if(!code) {
-            throw new Error("Source code not provided.");
+        if (!code) {
+            toast.warning("Please write some code before running.");
+            return;
         }
 
         try {
@@ -36,7 +32,7 @@ export default function CodeEditor() {
             setPartialError(false);
 
             //@ts-ignore
-            const {run: result} = await executeCode({
+            const { run: result } = await executeCode({
                 sourceCode: code, 
                 language: selectedLanguage,
                 userInput: userCodeInput
@@ -51,10 +47,12 @@ export default function CodeEditor() {
             if(result.signal === "SIGKILL") {
                 setOutput("⚠ Execution terminated — Your program took too long or used too much memory (possible infinite loop or recursion).");
                 setPartialError(true);
-            }
-
-        } catch (error) {
-            console.log("Error: ", error);
+            }            
+        } catch (error: any) {
+            console.error("Execution error:", error);
+            toast.error(
+                error?.message || "🚨 Execution service unavailable. Please try again."
+            );
         } finally {
             setIsLoading(false);
         }
@@ -82,12 +80,12 @@ export default function CodeEditor() {
 
 
     return (
-        <div className="h-screen bg-gray-900 flex flex-col justify-around gap-y-2 px-10">
-            <div className="h-[5%]">
+        <div className="h-screen max-h-auto w-full bg-gray-900 flex flex-col justify-start items-start px-10">
+            <div className="h-[8%] w-full">
                 <Navbar />
             </div>
             
-            <div className="w-[100%] h-[86%] ">  
+            <div className="w-[100%] h-[92%] max-h-screen flex flex-col gap-y-2 ">  
                 <PanelGroup autoSaveId="example" direction="horizontal">
                     <Panel defaultSize={50} minSize={30}>
                         <LeftPanel />
@@ -99,21 +97,33 @@ export default function CodeEditor() {
                         <RightPanel />    
                     </Panel>
                 </PanelGroup>
-            </div>
 
-            <div className="h-[5%] flex align-middle items-center justify-end mb-2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ">
-                <button 
-                    onClick={handleRunCode} 
-                    disabled={isLoading}
-                    className="h-full w-26 border-1 disabled:cursor-no-drop border-green-600 hover:bg-green-600 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-green-500 hover:text-white font-semibold text-lg cursor-pointer "
-                    > 
-                    {isLoading ? (
-                        <Loader color={"green-500"} />
-                    ) : (
-                        <BiSolidLeftArrow />
-                    )}
-                    Run
-                </button>
+                <div className="w-full bg-slate-900 flex items-center justify-center mb-2 gap-x-2">
+                    <button 
+                        onClick={handleRunCode} 
+                        disabled={isLoading}
+                        className=" w-26 h-10 border-1 disabled:cursor-no-drop border-green-600 hover:bg-green-600 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-green-500 hover:text-white font-semibold text-lg cursor-pointer "
+                        > 
+                        {isLoading ? (
+                            <Loader color={"green-500"} />
+                        ) : (
+                            <BiSolidLeftArrow />
+                        )}
+                        Run
+                    </button>
+                    <button 
+                        onClick={handleRunCode} 
+                        disabled={isLoading}
+                        className=" w-26 h-10 border-1 disabled:cursor-no-drop bg-green-600 border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-white font-semibold text-lg cursor-pointer "
+                        > 
+                        {isLoading ? (
+                            <Loader color={"green-500"} />
+                        ) : (
+                            <CloudCheck />
+                        )}
+                        Save
+                    </button>
+                </div>
             </div>
         </div>
     )

@@ -52,9 +52,6 @@ export default function RightPanel () {
                     rightPanelOption === "askAI" && <AskAIBlock />
                 }
             </div>
-            
-            
-
         </div>
     )
 }

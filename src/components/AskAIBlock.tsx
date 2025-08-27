@@ -8,6 +8,7 @@ import Loader from "./Loader";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import { toast } from "sonner";
 
 
 type GeminiResponse = {
@@ -22,7 +23,7 @@ type Message = {
 
 const SYSTEM_PROMPT = `
 You are a coding tutor. Give a brief, simple, accurate explanation.
-If needed, then output code ONLY between the markers:
+If needed, then output code ONLY between the markers in cpp language:
 ***CODE_START***
 \`\`\`<language>
 <code>
@@ -36,7 +37,10 @@ export default function ChatPage() {
     const [messages, setMessages] = useState<Message[]>([]);
 
     const handleSubmit = async () => {
-        if (!aiPrompt || !aiPrompt.trim()) return;
+        if (!aiPrompt || !aiPrompt.trim()) {
+            toast.warning("Please enter a message before sending.");
+            return;
+        }
 
         const userMessage: Message = { role: "user", content: aiPrompt };
 
@@ -50,14 +54,32 @@ export default function ChatPage() {
                 prompt: finalPrompt,
                 model_name: "gemini-2.5-pro",
             });
-
-            if (!response) throw new Error("Failed to get response from gemini");
+            
+            if (!response || !response.data?.output) {
+                toast.warning("Unexpected response from AI, try again.");
+                throw new Error("Invalid response structure");
+            }
 
             const aiMessage: Message = { role: "ai", content: response.data.output };
             setMessages((prev) => [...prev, aiMessage]);
+            
         } catch (error: any) {
-            const errorMessage: Message = { role: "ai", content: `⚠️ Api error: ${error.message}` };
+            console.error("AI request error:", error);
+            
+            if (error.isAxiosError) {
+                toast.error(error.response?.data?.message || "API request failed");
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Unknown error occurred");
+            }
+            
+            const errorMessage: Message = {
+                role: "ai",
+                content: "⚠️ Something went wrong while contacting AI.",
+            };
             setMessages((prev) => [...prev, errorMessage]);
+
         } finally {
             setIsAiLoading(false);
             setAiPrompt("");

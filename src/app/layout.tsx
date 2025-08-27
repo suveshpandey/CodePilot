@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CodeProvider } from "@/context/context";
+import { Toaster } from "@/components/ui/sonner"
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +16,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI-Code-Arena",
+  title: "CodePilot | Learn with AI",
   description: "Your AI powered coding space",
+  icons: {
+    icon: "/CodePilotIcon.png",        // Default favicon
+    shortcut: "CodePilotIcon",    // For browser tab
+    apple: "/CodePilotIcon.png",       // For iOS devices
+  },
 };
 
 export default function RootLayout({
@@ -30,6 +37,7 @@ export default function RootLayout({
       >
         <CodeProvider>
           {children}
+          <Toaster />
         </CodeProvider>
       </body>
     </html>
