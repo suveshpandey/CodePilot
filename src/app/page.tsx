@@ -1,7 +1,11 @@
-// app/page.tsx
+"use client"
+
 import { Code2, Bot, Brain, Zap, Shield, Users, ChevronRight, Play } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-slate-900 text-slate-300">
       {/* Navigation */}
@@ -10,20 +14,13 @@ export default function Home() {
           <Code2 className="h-8 w-8 text-indigo-500" />
           <span className="text-2xl font-bold text-white">CodePilot</span>
         </div>
-        
-        <div className="hidden md:flex space-x-8">
-          <a href="#" className="hover:text-indigo-400 transition-colors">Features</a>
-          <a href="#" className="hover:text-indigo-400 transition-colors">How It Works</a>
-          <a href="#" className="hover:text-indigo-400 transition-colors">Pricing</a>
-          <a href="#" className="hover:text-indigo-400 transition-colors">About</a>
-        </div>
-        
+
         <div className="flex space-x-4">
-          <button className="px-4 py-2 rounded-md bg-slate-800 hover:bg-slate-700 transition-colors">
+          <button onClick={() => router.push("/sign-in")} className="px-4 py-2 rounded-md bg-slate-800 hover:bg-slate-700 transition-colors cursor-pointer">
             Sign In
           </button>
-          <button className="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white transition-colors">
-            Get Started
+          <button onClick={() => router.push("/sign-up")} className="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white transition-colors cursor-pointer">
+            Sign Up
           </button>
         </div>
       </nav>
