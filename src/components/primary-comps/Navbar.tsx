@@ -2,7 +2,7 @@
 
 import { User, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { getSession } from 'next-auth/react';
 
 type NavOptions = "dashboard" | "code-editor" | "code-reviewer" | "blogs";
@@ -11,6 +11,18 @@ export default function Navbar() {
     const [selectedNav, setSelectedNav] = useState<NavOptions>("code-editor");
     const [user, setUser] = useState<any>(null);
     const router = useRouter();
+    const pathname = usePathname();
+
+    const handleSelectNav = (page: NavOptions) => {
+        router.push(`/${page}`);
+    }
+
+    useEffect(() => {
+        if(pathname.startsWith("/dashboard")) setSelectedNav("dashboard");
+        else if(pathname.startsWith("/code-editor")) setSelectedNav("code-editor");
+        else if(pathname.startsWith("/code-reviewer")) setSelectedNav("code-reviewer");
+        else if(pathname.startsWith("/blogs")) setSelectedNav("blogs");
+    }, [pathname])
 
     useEffect(() => {
         const fetchSession = async () => {
@@ -31,42 +43,31 @@ export default function Navbar() {
 
                 {/* Center: Nav Links */}
                 <div className="hidden md:flex bg-slate-800 px-10 rounded-full py-2 border-1 border-slate-600 space-x-8">
-                    <a
-                    onClick={() => {
-                        setSelectedNav("dashboard")
-                        router.push("/dashboard")
-                    }}
+                    <div
+                    onClick={() => handleSelectNav("dashboard")}
                     className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "dashboard" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
                         Home
-                    </a>
-                    <a
-                    onClick={() => {
-                        setSelectedNav("code-editor")
-                        router.push("/code-editor")
-                    }}
+                    </div>
+                    <div
+                    onClick={() => handleSelectNav("code-editor")}
                     className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "code-editor" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
                         IDE
-                    </a>
-                    <a
-                    onClick={() => {
-                        setSelectedNav("code-reviewer")
-                        router.push("/code-reviewer")
-                    }}
+                    </div>
+                    <div
+                    onClick={() => handleSelectNav("code-reviewer")}
+
                     className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "code-reviewer" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
                         Code Reviewer
-                    </a>
-                    <a
-                    onClick={() => {
-                        setSelectedNav("blogs")
-                        router.push("/blogs")
-                    }}
+                    </div>
+                    <div
+                    onClick={() => handleSelectNav("blogs")}
                     className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "blogs" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
                         Blogs
-                    </a>
+                    </div>
                 </div>
 
                 {/* Right: Theme + Profile */}
