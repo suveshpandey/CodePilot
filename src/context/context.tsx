@@ -59,7 +59,7 @@ interface CodeProviderProps {
 
 export function CodeProvider ({children}: CodeProviderProps) {
     const [code, setCode] = useState<string | undefined>("");
-    const [selectedLanguage, setSelectedLanguage] = useState<Language>("javascript");
+    const [selectedLanguage, setSelectedLanguage] = useState<Language>("cpp");
     const [output, setOutput] = useState<string | null>(null);
     const [outputError, setOutputError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);

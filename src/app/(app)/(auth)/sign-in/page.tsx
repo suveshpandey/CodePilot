@@ -3,12 +3,11 @@
 import { useState } from "react";
 import { Mail, User, Lock, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { signIn } from "next-auth/react";
 
-export default function SignupPage() {
+export default function SigninPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     
@@ -18,7 +17,7 @@ export default function SignupPage() {
         e.preventDefault();
 
         try {
-            if (!email || !password || !username) {
+            if (!email || !password) {
                 setError("All fields are required");
                 return;
             }
@@ -26,47 +25,41 @@ export default function SignupPage() {
             setError(null);
             setLoading(true);
 
-            const response = await axios.post("/api/auth/sign-up", {
-                email: email,
-                password: password,
-                username: username
+            const result = await signIn('credentials', {
+                redirect: false,
+                email,
+                password
             })
+            if (result?.error) {
+                console.log(result.error);
+                setError("Login failed, try again");
+                return;
+            }
+            if (result?.ok) {
+                console.log("signin done");
+                router.push("/code-editor")
+            }
 
-            if (response.status === 201) {
-                console.log("user registered successfully, please verify your email")
-                router.push(`/verify/${email}`);
-                return;
-            } else {
-                //@ts-ignore
-                setError(response.message);
-                return;
-            }
-        } catch (error: any) {
-            console.log("Error occured while registering a new user: ", error);
-            
-            if (error.response.data.message) {
-                setError(error.response.data.message);
-            } else if (error.message) {
-                setError(error.message);
-            } else {
-                setError("Something went wrong, please try again");
-            }
+        } catch (error) {
+            console.log(error);
         } finally {
             setLoading(false);
-            setEmail("");
-            setPassword("");
-            setUsername("");
         }
+
+        
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-900 text-slate-300">
             <div className="w-full max-w-md bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-700">
-                <h1 className="text-3xl font-extrabold mb-2 text-center text-violet-800">
-                    CodePilot
-                </h1>
+                <div className="flex items-center justify-center gap-x-2 mb-2">
+                    <img className="size-10" src="/code-pilot-icon.png" alt="" />
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-violet-500 bg-clip-text text-transparent">
+                        CodePilot
+                    </h1>
+                </div>
                 <p className="text-center text-slate-400 mb-6 text-sm">
-                    Create your account to get started
+                    Sign-In to your account
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -82,35 +75,23 @@ export default function SignupPage() {
                         className="w-full py-2 px-4 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-800"
                         />
                     </div>
-                    
+
                     <div>
                         <label className="flex items-center gap-1 mb-1 text-sm font-medium">
                         <Lock className="w-4 h-4 text-slate-400" /> Password
                         </label>
                         <input
                         type="password"
-                        placeholder="Enter a strong password"
+                        placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className="w-full py-2 px-4 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-800"
                         />
                     </div>
 
-                    <div>
-                        <label className="flex items-center gap-1 mb-1 text-sm font-medium">
-                        <User className="w-4 h-4 text-slate-400" /> Username
-                        </label>
-                        <input
-                        type="text"
-                        placeholder="Choose a username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="w-full py-2 px-4 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-800"
-                        />
-                    </div>
                     
                     {error && (
-                        <div className="mb-4 py-2 px-4 text-sm text-red-400 border border-red-500/30 rounded-lg">
+                        <div className="mb-4 p-2 text-sm text-red-400 border border-red-500/30 rounded-lg">
                             {error}
                         </div>
                     )}
@@ -123,18 +104,18 @@ export default function SignupPage() {
                         {loading ? (
                         <>
                             <Loader2 className="w-5 h-5 animate-spin" />
-                            Registering...
+                            Signing-In
                         </>
                         ) : (
-                        "Register"
+                        "Sign-In"
                         )}
                     </button>
                 </form>
 
                 <p className="text-center mt-6 text-sm text-slate-400">
-                    Already have an account? <span onClick={() => router.push("/sign-in")}  className="text-violet-600 hover:text-violet-500 cursor-pointer">Login</span>
+                    Don't have an account? <span onClick={() => router.push("/sign-up")}  className="text-violet-600 hover:text-violet-500 cursor-pointer">Register</span>
                 </p>
             </div>
         </div>
     );
-    }
+}

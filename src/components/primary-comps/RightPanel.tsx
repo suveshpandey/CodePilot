@@ -1,7 +1,7 @@
 import { useAppContext } from "@/context/context";
 import { RotateCcw, Sparkles, Terminal, TerminalSquare } from "lucide-react";
 import OutputDisplay from "./OutputDisplay";
-import Badge from "./Badge";
+import Badge from "../secondary-comps/Badge";
 import OutputComparison from "./OutputComparison";
 import AskAIBlocl from "./AskAIBlock";
 import AskAIBlock from "./AskAIBlock";

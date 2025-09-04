@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
 
     // Public routes that don't require authentication
     const publicRoutes = ['/sign-in', '/sign-up', '/verify'];
-    const protectedRoutes = ['/code-editor', '/blogs'];
+    const protectedRoutes = ['/code-editor', '/blogs', '/user-profile'];
 
     // Redirect authenticated users away from auth pages
     if (token && publicRoutes.includes(pathname)) {
@@ -32,6 +32,7 @@ export const config = {
         '/sign-in', 
         '/sign-up',
         '/verify',
+        '/user-profile',
         '/code-editor/:path*',
         '/blogs/:path*',
         '/'

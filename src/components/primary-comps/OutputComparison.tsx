@@ -1,10 +1,11 @@
 import { useAppContext } from "@/context/context";
 
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import UserCodeInput from "./UserInputCode";
-import UserDesiredOutput from "./UserDesiredOutput";
-import OutputComparisonBlock from "./OutputComparisonBlock";
-import OutputDisplaySec from "./OutputDisplaySec";
+import UserCodeInput from "@/components/secondary-comps/UserInputCode";
+
+import UserDesiredOutput from "../secondary-comps/UserDesiredOutput";
+import OutputComparisonBlock from "@/components/primary-comps/OutputComparisonBlock";
+import OutputDisplaySec from "@/components/primary-comps/OutputDisplaySec";
 
 //"Compare" section display
 export default function OutputComparison () {

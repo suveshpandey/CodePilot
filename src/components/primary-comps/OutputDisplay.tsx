@@ -1,5 +1,5 @@
 import { useAppContext } from "@/context/context";
-import SkeletonDemo from "./Skeleton";
+import SkeletonDemo from "../secondary-comps/Skeleton";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import HintAi from "./HintAIBlock";
 

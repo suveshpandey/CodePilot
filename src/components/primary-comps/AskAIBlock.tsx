@@ -4,7 +4,7 @@ import { useAppContext } from "@/context/context";
 import axios from "axios";
 import { useState } from "react";
 import { MessageCircleQuestion, Send, SendHorizonal } from "lucide-react";
-import Loader from "./Loader";
+import Loader from "@/components/secondary-comps/Loader";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";

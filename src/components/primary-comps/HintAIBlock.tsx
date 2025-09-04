@@ -5,7 +5,7 @@ import axios from "axios";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import Loader from "./Loader";
+import Loader from "@/components/secondary-comps/Loader";
 import { Lightbulb, MessageSquareDashed } from "lucide-react"; // icons
 
 import { toast } from "sonner";

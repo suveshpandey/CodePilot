@@ -1,11 +1,12 @@
 import { useAppContext } from "@/context/context";
 import { Editor } from "@monaco-editor/react";
 import { Code2, CopyCheck, CopyIcon, RotateCcw } from "lucide-react";
-import Loader from "@/components/Loader";
+import Loader from "@/components/secondary-comps/Loader";
 import { codeSnippets } from "@/constants";
 import { useState } from "react";
 
-import LanguageSelector from "./LanguageSelector";
+import LanguageSelector from "@/components/secondary-comps/LanguageSelector";
+
 import { Language } from "@/types";
 
 export default function LeftPanel () {
@@ -59,7 +60,7 @@ export default function LeftPanel () {
                 value={code}
                 loading={ <Loader color={"slate-400"} /> }
                 onChange={(code) => setCode(code)}
-                defaultLanguage="javascript"
+                defaultLanguage="cpp"
                 language={selectedLanguage} 
                 defaultValue={codeSnippets[selectedLanguage]} 
             />

@@ -1,5 +1,6 @@
 import { useAppContext } from "@/context/context";
-import SkeletonDemo from "./Skeleton";
+import SkeletonDemo from "@/components/secondary-comps/Skeleton";
+
 import { MonitorDot } from "lucide-react";
 
 //seconday "Output" display -> present inside "Compare" section's below-section

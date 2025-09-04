@@ -188,9 +188,12 @@ export default function VerifyEmail() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-900 text-slate-300">
             <div className="w-full max-w-md bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-700">
-                <h1 className="text-3xl font-extrabold mb-2 text-center text-violet-600">
-                CodePilot
-                </h1>
+                <div className="flex items-center justify-center gap-x-2 mb-2">
+                    <img className="size-10" src="/code-pilot-icon.png" alt="" />
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-violet-500 bg-clip-text text-transparent">
+                        CodePilot
+                    </h1>
+                </div>
                 <p className="text-center text-slate-400 mb-6 text-sm">
                 Enter the 6-digit code sent to <span className="text-violet-400">{email}</span>
                 </p>
@@ -209,9 +212,9 @@ export default function VerifyEmail() {
                                 inputRefs.current[index] = el;
                             }}
                             className="w-12 h-12 text-center text-xl font-semibold rounded-lg 
-                                        bg-slate-900 border border-slate-700 
-                                        focus:outline-none focus:ring-2 focus:ring-violet-500 
-                                        transition-all"
+                            bg-slate-900 border border-slate-700 
+                            focus:outline-none focus:ring-2 focus:ring-violet-500 
+                            transition-all"
                             />
                         ))}
                     </div>
@@ -233,7 +236,7 @@ export default function VerifyEmail() {
                         {loading ? (
                         <>
                             <Loader2 className="w-5 h-5 animate-spin" />
-                            Verifying...
+                            Verifying
                         </>
                         ) : (
                         "Verify"

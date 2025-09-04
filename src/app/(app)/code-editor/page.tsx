@@ -1,13 +1,13 @@
 "use client"
 
-import LeftPanel from "@/components/LeftPanel";
-import Loader from "@/components/Loader";
-import Navbar from "@/components/Navbar";
-import RightPanel from "@/components/RightPanel";
+import LeftPanel from "@/components/primary-comps/LeftPanel";
+import Loader from "@/components/secondary-comps/Loader";
+import Navbar from "@/components/primary-comps/Navbar";
+import RightPanel from "@/components/primary-comps/RightPanel";
 import { codeSnippets } from "@/constants";
 import { useAppContext } from "@/context/context";
 import { executeCode } from "@/lib";
-import { CloudCheck, CloudFog, Upload } from "lucide-react";
+import { CloudCheck } from "lucide-react";
 import { useEffect } from "react";
 import { BiSolidLeftArrow } from "react-icons/bi";
 
@@ -59,7 +59,7 @@ export default function CodeEditor() {
     }
     
     useEffect(() => {
-        setSelectedLanguage("javascript");
+        setSelectedLanguage("cpp");
         setCode(codeSnippets[selectedLanguage]);
     }, []);
 

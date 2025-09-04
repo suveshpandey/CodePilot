@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   title: "CodePilot | Learn with AI",
   description: "Your AI powered coding space",
   icons: {
-    icon: "/CodePilotIcon.png",        // Default favicon
-    shortcut: "CodePilotIcon",    // For browser tab
-    apple: "/CodePilotIcon.png",       // For iOS devices
+    icon: "/code-pilot-icon.png",        // Default favicon
+    shortcut: "/code-pilot-icon",    // For browser tab
+    apple: "/code-pilot-icon.png",       // For iOS devices
   },
 };
 
