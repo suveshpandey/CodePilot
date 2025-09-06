@@ -3,13 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 
+interface RouteContext {
+    params: {id: string}
+}
 
 export async function GET(
-    request: Request,
-    { params }: { params: { id: string } }
-    ) {
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
-        const { id } = params;
+        const { id } = await params;
 
         const blog = await prismaClient.blog.findUnique({
         where: { id },
@@ -38,9 +41,9 @@ export async function GET(
 }
 
 export async function DELETE(
-    req: Request,
-    { params }: { params: { id: string } }
-    ) {
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id) {
@@ -50,7 +53,7 @@ export async function DELETE(
             );
         }
 
-        const { id } = params;
+        const { id } = await params;
 
         // ✅ delete safely only if the blog belongs to the user
         const result = await prismaClient.blog.deleteMany({
