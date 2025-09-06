@@ -7,7 +7,8 @@ declare module 'next-auth' {
         isVerified: boolean,
         email: string,
         username?: string | null,
-        createdAt: Date
+        createdAt: Date,
+        provider?: String
     }
     interface Session {
         user: {
@@ -15,7 +16,8 @@ declare module 'next-auth' {
             isVerified: boolean,
             email: string,
             username?: string | null,
-            createdAt: Date
+            createdAt: Date,
+            provider?: String
         } & DefaultSession['user']
     }
 }
@@ -26,6 +28,7 @@ declare module 'next-auth/jwt' {
         isVerified: boolean,
         email: string,
         username?: string | null,
-        createdAt: Date
+        createdAt: Date,
+        provider?: String
     }
 }

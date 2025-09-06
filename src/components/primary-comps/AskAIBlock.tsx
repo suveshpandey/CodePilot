@@ -88,7 +88,7 @@ export default function ChatPage() {
 
     return (
         
-        <div className="h-full w-full flex flex-col gap-y-3 justify-between items-center bg-slate-800 text-slate-300 p-3 ">
+        <div className="h-full w-full flex flex-col gap-y-3 justify-between items-center bg-slate-800 text-slate-300 p-3 rounded-md ">
             {/* Chat Display - flex-1 makes it take remaining space */}
             <div className=" h-full w-full flex-1 overflow-y-auto p-4 space-y-3">
                 {messages.length > 0 ? (

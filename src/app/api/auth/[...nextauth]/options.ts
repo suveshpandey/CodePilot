@@ -1,6 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import prismaClient from "@/libs/prisma";
 
@@ -48,17 +48,69 @@ export const authOptions: NextAuthOptions = {
                     throw new Error(error);
                 }
             }
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         })
     ],
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
+        async signIn({user, account, profile}) {
+            if(account?.provider === "google") {
+                try {
+                    const existingUser = await prismaClient.user.findFirst({
+                        where: {
+                            email: user.email!
+                        }
+                    });
+                    if (!existingUser) {
+                        await prismaClient.user.create({
+                            data: {
+                                email: user.email!,
+                                username: user.email!.split('@')[0],
+                                isVerified: true,
+                            }
+                        });
+                    } else if (!existingUser.isVerified) {
+                        await prismaClient.user.update({
+                            where: {email: user.email!},
+                            data: {isVerified: true}
+                        });
+                    }
+                    return true;
+                } catch (error) {
+                    console.error("Error in Google sign-in callback:", error);
+                    return false;
+                }
+            }
+            return true;
+        },
+        async jwt({ token, user, account, trigger }) {
+            if (trigger === "signIn" || trigger === "update") {
+                const dbUser = await prismaClient.user.findFirst({
+                    where: {email: token.email}
+                });
+
+                if (dbUser) {
+                    token.id = dbUser.id?.toString() as string;
+                    token.isVerified = dbUser.isVerified;
+                    token.email = dbUser.email,
+                    token.username = dbUser.username;
+                    token.createdAt = dbUser.createdAt;
+                }
+            }
+            else if (user) {
                 token.id = user.id?.toString() as string;
                 token.isVerified = user.isVerified;
                 token.email = user.email,
                 token.username = user.username;
                 token.createdAt = user.createdAt;
             }
+
+            if (account) {
+                token.provider = account.provider;
+            }
+
             return token
         },
         async session({ session, token }) {
@@ -68,6 +120,7 @@ export const authOptions: NextAuthOptions = {
                 session.user.email = token.email,
                 session.user.username = token.username;
                 session.user.createdAt = token.createdAt;
+                session.user.provider = token.provider;
             }
             return session
         },

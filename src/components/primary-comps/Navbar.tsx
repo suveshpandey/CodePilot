@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { getSession } from 'next-auth/react';
 
-type NavOptions = "dashboard" | "code-editor" | "code-reviewer" | "blogs";
+type NavOptions = "dashboard" | "code-editor" | "my-notes" | "blogs";
 
 export default function Navbar() {
     const [selectedNav, setSelectedNav] = useState<NavOptions>("code-editor");
@@ -20,7 +20,7 @@ export default function Navbar() {
     useEffect(() => {
         if(pathname.startsWith("/dashboard")) setSelectedNav("dashboard");
         else if(pathname.startsWith("/code-editor")) setSelectedNav("code-editor");
-        else if(pathname.startsWith("/code-reviewer")) setSelectedNav("code-reviewer");
+        else if(pathname.startsWith("/my-notes")) setSelectedNav("my-notes");
         else if(pathname.startsWith("/blogs")) setSelectedNav("blogs");
     }, [pathname])
 
@@ -43,12 +43,12 @@ export default function Navbar() {
 
                 {/* Center: Nav Links */}
                 <div className="hidden md:flex bg-slate-800 px-10 rounded-full py-2 border-1 border-slate-600 space-x-8">
-                    <div
+                    {/* <div
                     onClick={() => handleSelectNav("dashboard")}
                     className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "dashboard" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
                         Home
-                    </div>
+                    </div> */}
                     <div
                     onClick={() => handleSelectNav("code-editor")}
                     className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "code-editor" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
@@ -56,11 +56,11 @@ export default function Navbar() {
                         IDE
                     </div>
                     <div
-                    onClick={() => handleSelectNav("code-reviewer")}
+                    onClick={() => handleSelectNav("my-notes")}
 
-                    className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "code-reviewer" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
+                    className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "my-notes" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
-                        Code Reviewer
+                        My Notes
                     </div>
                     <div
                     onClick={() => handleSelectNav("blogs")}

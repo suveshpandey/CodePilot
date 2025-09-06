@@ -29,7 +29,7 @@ export default function RightPanel () {
 
     return (
         <div className={`h-full w-full flex flex-col items-center justify-between bg-slate-800 ${textColor} rounded-md border-1 border-slate-600`}>
-            <div className="py-1 w-full bg-slate-700 rounded-t-[5px] px-2 flex items-center justify-between">
+            <div className="py-1 w-full bg-slate-700 rounded-t-md px-2 flex items-center justify-between">
                 <div className="flex gap-x-4">
                     <Badge icon={Terminal} color={"text-blue-500"} label={"Output"} selectionOption={"output"} isSelected={rightPanelOption === "output"} />
                     <div className="bg-slate-400 w-0.5 my-1"></div>

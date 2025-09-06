@@ -9,7 +9,7 @@ export default function OutputDisplay () {
         const {output, isLoading} = useAppContext();
     
     return (
-        <div className="h-full flex items-center justify-center">
+        <div className="h-full flex items-center justify-center rounded-md">
             <PanelGroup autoSaveId="example" direction="vertical">
                 <Panel defaultSize={90} minSize={30}>
                     <div className="h-full w-full flex items-start px-3 pt-2 overflow-y-auto">

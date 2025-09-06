@@ -8,7 +8,7 @@ export default function OutputDisplaySec() {
     const { output, isLoading } = useAppContext();
 
     return (
-        <div className="h-full w-full p-4 bg-slate-800 overflow-y-auto custom-scroll">
+        <div className="h-full w-full p-4 bg-slate-800 overflow-y-auto custom-scroll rounded-md">
             {/* Header */}
             <p className="text-slate-300  text-md font-medium mb-3 flex items-center gap-2">
                 Code Output

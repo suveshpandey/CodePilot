@@ -49,18 +49,52 @@ export default function SigninPage() {
         
     };
 
+    const handleGoogleSignIn = async () => {
+        try {
+            setError(null);
+            const result = await signIn("google", { 
+                callbackUrl: "/code-editor", // Redirect after successful login
+                redirect: true 
+            });
+            
+            if (result?.error) {
+                setError(result.error);
+            }
+        } catch (error: any) {
+            setError(error.message || "Failed to sign in with Google");
+        }
+    };
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-900 text-slate-300">
             <div className="w-full max-w-md bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-700">
                 <div className="flex items-center justify-center gap-x-2 mb-2">
                     <img className="size-10" src="/code-pilot-icon.png" alt="" />
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-violet-500 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-300 to-violet-400 bg-clip-text text-transparent">
                         CodePilot
                     </h1>
                 </div>
                 <p className="text-center text-slate-400 mb-6 text-sm">
                     Sign-In to your account
                 </p>
+
+                {/* Google Sign In Button */}
+                <button
+                    onClick={handleGoogleSignIn}
+                    className="w-full py-2 mb-6 flex justify-center items-center gap-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-slate-200 font-semibold shadow-md transition cursor-pointer"
+                >
+                    <img className="w-5 h-5" src="https://www.google.com/favicon.ico" alt="Google" />
+                    Sign in with Google
+                </button>
+
+                <div className="relative mb-6">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-slate-600"></div>
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-slate-800 text-slate-400">Or continue with email</span>
+                    </div>
+                </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -99,7 +133,7 @@ export default function SigninPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-2 mt-4 flex justify-center items-center gap-2 bg-violet-800 hover:bg-violet-700 disabled:opacity-70 rounded-lg text-slate-100 font-semibold shadow-md transition"
+                        className="w-full py-2 mt-4 flex justify-center items-center gap-2 bg-gradient-to-tr from-violet-800 to-violet-500 hover:to-violet-400 disabled:opacity-70 rounded-lg text-slate-100 font-semibold shadow-md transition cursor-pointer"
                     >
                         {loading ? (
                         <>
@@ -113,7 +147,7 @@ export default function SigninPage() {
                 </form>
 
                 <p className="text-center mt-6 text-sm text-slate-400">
-                    Don't have an account? <span onClick={() => router.push("/sign-up")}  className="text-violet-600 hover:text-violet-500 cursor-pointer">Register</span>
+                    Don't have an account? <span onClick={() => router.push("/sign-up")}  className="text-violet-500 hover:text-violet-400 cursor-pointer">Register</span>
                 </p>
             </div>
         </div>

@@ -1,116 +1,3 @@
-// "use client"
-
-// import axios from "axios";
-// import { useParams, useRouter } from "next/navigation";
-// import { useState } from "react";
-// import { User, Loader2 } from "lucide-react";
-
-// export default function VerifyEmail () {
-//     const router = useRouter();
-//     const params = useParams<{email: string}>();
-//     const rawEmail = params.email;
-//     const email = decodeURIComponent(rawEmail);
-
-//     const [verifiactionCode, setVerificationCode] = useState("");
-//     const [error, setError] = useState<string | null>(null);
-//     const [loading, setLoading] = useState(false);
-
-//     const handleSubmit = async (e: React.FormEvent) => {
-//         e.preventDefault();
-
-//         try {
-//             if (!verifiactionCode) {
-//                 setError("Please enter verification code");
-//                 return;
-//             }
-
-//             setError(null);
-//             setLoading(true);
-
-//             const response = await axios.post(`/api/auth/verify-code`, {
-//                 email: email,
-//                 code: verifiactionCode
-//             })
-//             if (response.status === 200) {
-//                 console.log("user verified successfully")
-//                 router.push("/sign-in");
-//                 return;
-//             } else {
-//                 //@ts-ignore
-//                 setError(response.message);
-//                 return;
-//             }
-//         } catch (error: any) {
-//             console.log("Error occured while registering a new user: ", error);
-            
-//             if (error.response.data.message) {
-//                 setError(error.response.data.message);
-//             } else if (error.message) {
-//                 setError(error.message);
-//             } else {
-//                 setError("Something went wrong, please try again");
-//             }
-//         } finally {
-//             setLoading(false);
-//         }
-//     }
-
-//     return (
-//         <div className="min-h-screen flex items-center justify-center bg-slate-900 text-slate-300">
-//             <div className="w-full max-w-md bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-700">
-//                 <h1 className="text-3xl font-extrabold mb-2 text-center text-violet-800">
-//                     CodePilot
-//                 </h1>
-//                 <p className="text-center text-slate-400 mb-6 text-sm">
-//                     Verify your account
-//                 </p>
-
-//                 <form onSubmit={handleSubmit} className="space-y-4">
-
-//                     <div>
-//                         <label className="flex items-center gap-1 mb-1 text-sm font-medium">
-//                         <User className="w-4 h-4 text-slate-400" /> Verifiaction Code
-//                         </label>
-//                         <input
-//                         type="text"
-//                         placeholder="* * * * * *"
-//                         value={verifiactionCode}
-//                         onChange={(e) => setVerificationCode(e.target.value)}
-//                         className="w-full py-2 px-4 text-center rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-800"
-//                         />
-//                     </div>
-                    
-//                     {error && (
-//                         <div className="mb-4 py-2 px-4 text-sm text-red-400 border border-red-500/30 rounded-lg">
-//                             {error}
-//                         </div>
-//                     )}
-
-//                     <button
-//                         type="submit"
-//                         disabled={loading}
-//                         className="w-full py-2 mt-4 flex justify-center items-center gap-2 bg-violet-800 hover:bg-violet-700 disabled:opacity-70 rounded-lg text-slate-100 font-semibold shadow-md transition"
-//                     >
-//                         {loading ? (
-//                         <>
-//                             <Loader2 className="w-5 h-5 animate-spin" />
-//                             Verifying...
-//                         </>
-//                         ) : (
-//                         "Verify"
-//                         )}
-//                     </button>
-//                 </form>
-
-//                 <p className="text-center mt-6 text-sm text-slate-400">
-//                     Try again <span onClick={() => router.push("/sign-up")}  className="text-violet-600 hover:text-violet-500 cursor-pointer">Login</span>
-//                 </p>
-//             </div>
-//         </div>
-//     )
-// }
-
-
 "use client"
 
 import axios from "axios";
@@ -190,7 +77,7 @@ export default function VerifyEmail() {
             <div className="w-full max-w-md bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-700">
                 <div className="flex items-center justify-center gap-x-2 mb-2">
                     <img className="size-10" src="/code-pilot-icon.png" alt="" />
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-violet-500 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-300 to-violet-400 bg-clip-text text-transparent">
                         CodePilot
                     </h1>
                 </div>
@@ -213,7 +100,7 @@ export default function VerifyEmail() {
                             }}
                             className="w-12 h-12 text-center text-xl font-semibold rounded-lg 
                             bg-slate-900 border border-slate-700 
-                            focus:outline-none focus:ring-2 focus:ring-violet-500 
+                            focus:outline-none focus:border-1 focus:border-violet-500 
                             transition-all"
                             />
                         ))}
@@ -230,8 +117,8 @@ export default function VerifyEmail() {
                         type="submit"
                         disabled={loading}
                         className="w-full py-3 flex justify-center items-center gap-2 
-                                bg-violet-600 hover:bg-violet-500 disabled:opacity-70 
-                                rounded-lg text-slate-100 font-semibold shadow-md transition"
+                                bg-gradient-to-tr from-violet-800 to-violet-500 hover:to-violet-400 disabled:opacity-70 
+                                rounded-lg text-slate-100 font-semibold shadow-md transition cursor-pointer"
                     >
                         {loading ? (
                         <>

@@ -52,18 +52,21 @@ export default function LeftPanel () {
                     </button>
                 </div>
             </div>
-            <Editor 
-                width="100%"
-                height="100%"
-                theme="vs-dark"
-                className="rounded-md active:border-slate-100"
-                value={code}
-                loading={ <Loader color={"slate-400"} /> }
-                onChange={(code) => setCode(code)}
-                defaultLanguage="cpp"
-                language={selectedLanguage} 
-                defaultValue={codeSnippets[selectedLanguage]} 
-            />
+            <div className="h-full rounded-b-md overflow-hidden">
+                <Editor 
+                    width="100%"
+                    height="100%"
+                    theme="vs-dark"
+                    className="rounded-md active:border-slate-100"
+                    value={code}
+                    loading={ <Loader color={"slate-400"} /> }
+                    onChange={(code) => setCode(code)}
+                    defaultLanguage="cpp"
+                    language={selectedLanguage} 
+                    defaultValue={codeSnippets[selectedLanguage]} 
+                />
+            </div>
         </div>
+        
     )
 }

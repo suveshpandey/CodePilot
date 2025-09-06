@@ -12,9 +12,7 @@ export default function OutputComparison () {
     const {} = useAppContext();
 
     return (
-        
-            
-            <div className="w-full h-full">
+            <div className="w-full h-full rounded-md">
                 <PanelGroup autoSaveId="example" direction="vertical">
                     {/* upper panel -> user input and user output */}
                     <Panel defaultSize={50} minSize={30}>

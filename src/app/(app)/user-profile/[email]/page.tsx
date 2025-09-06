@@ -8,7 +8,6 @@ import {
   Calendar, 
   LogOut, 
   Edit3, 
-  Shield,
   ChevronLeft,
   Camera
 } from "lucide-react";
