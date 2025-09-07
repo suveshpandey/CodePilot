@@ -80,8 +80,8 @@ export async function GET () {
 
         if (!blogs) {
             return NextResponse.json(
-                {message: "Failed to fetch blogs, please try again"},
-                {status: 400}
+                {message: "Blogs not found"},
+                {status: 404}
             );
         } else {
             return NextResponse.json({blogs: blogs}, {status: 200});

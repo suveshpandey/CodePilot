@@ -10,21 +10,17 @@ import { getSession } from "next-auth/react";
 import { toast } from "sonner";
 import Loader from "@/components/secondary-comps/Loader";
 
-type BlogType = {
+type NoteType = {
     id: string,
     title: string,
     description: string,
     code?: string | null,
     createdAt: Date,
     userId: string,
-    user: {
-        username: string,
-        email: string,
-    },
 } 
 
 export default function DisplayBlog() {
-    const [blog, setBlog] = useState<BlogType | null>(null);
+    const [note, setNote] = useState<NoteType | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [userId, setUserId] = useState<string>();
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -37,13 +33,13 @@ export default function DisplayBlog() {
     const fetchBlogDetails = async () => {
         try {
             setLoading(true);
-            const response = await axios.get<{blog: BlogType}>(`/api/blogs/${id}`);
+            const response = await axios.get<{note: NoteType}>(`/api/notes/note/${id}`);
             if (!response) {
                 toast.error("Unable to fetch blog details, please refresh the page");
             } else if (response.status === 404) {
                 toast.error("Blog not found");
             } 
-            setBlog(response.data.blog);
+            setNote(response.data.note);
         } catch (error) {
             console.log("Failed to fetch the blog, error: ", error);
             toast.error("Internal server error, please try again");
@@ -53,21 +49,21 @@ export default function DisplayBlog() {
     }
 
     const deleteBlog = async () => {
-        if (!confirm("Are you sure you want to delete this blog? This action cannot be undone.")) return;
+        if (!confirm("Are you sure you want to delete this note? This action cannot be undone.")) return;
         
         try {
             setIsDeleting(true);
-            const response = await axios.delete(`/api/blogs/${id}`);
+            const response = await axios.delete(`/api/notes/note/${id}`);
             if (response.status === 200) {
-                toast.success("Blog deleted successfully!");
+                toast.success("Note deleted successfully!");
                 router.back();
             }
         } catch (error: any) {
-            console.log("Blog post failed, error: ", error);
+            console.log("Note deletion failed, error: ", error);
             if (error?.response?.status === 403) {
-                toast.error("You don't have permission to delete this blog");
+                toast.error("You don't have permission to delete this note");
             } else if (error?.response?.status === 404) {
-                toast.error("Blog not found");
+                toast.error("Note not found");
             } else {
                 toast.error("Internal server error");
             }
@@ -77,9 +73,9 @@ export default function DisplayBlog() {
     }
 
     const copyToClipboard = () => {
-        if (!blog?.code) return;
+        if (!note?.code) return;
         
-        navigator.clipboard.writeText(blog.code)
+        navigator.clipboard.writeText(note.code)
             .then(() => {
                 setCopied(true);
                 toast.success("Code copied to clipboard!");
@@ -117,7 +113,7 @@ export default function DisplayBlog() {
             <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
                 <div className="flex flex-col items-center">
                     <Loader color="white" />
-                    <p className="mt-4 text-slate-300">Loading blog post...</p>
+                    <p className="mt-4 text-slate-300">Loading your note...</p>
                 </div>
             </div>
         );
@@ -133,10 +129,10 @@ export default function DisplayBlog() {
                         className="flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer group"
                     >
                         <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                        Back to Blogs
+                        Back to My-Notes
                     </button>
                     
-                    {userId === blog?.userId && (
+                    {userId === note?.userId && (
                         <button 
                             onClick={deleteBlog}
                             disabled={isDeleting}
@@ -162,25 +158,17 @@ export default function DisplayBlog() {
             <div className="max-w-4xl mx-auto px-6 py-8">
                 {/* Title */}
                 <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
-                    {blog?.title}
+                    {note?.title}
                 </h1>
 
                 {/* Author + Date */}
                 <div className="flex flex-wrap items-center gap-4 mb-8 p-4 bg-slate-800/30 rounded-xl border border-slate-700/50">
                     <div className="flex items-center gap-2">
-                        <div className="p-2 bg-blue-500/10 rounded-lg">
-                            <User className="text-blue-400" size={18} />
-                        </div>
-                        <span className="text-slate-300">Posted by</span>
-                        <span className="text-blue-400 font-medium">{blog?.user.username}</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
                         <div className="p-2 bg-purple-500/10 rounded-lg">
                             <Calendar className="text-purple-400" size={18} />
                         </div>
-                        <span className="text-slate-300">on</span>
-                        <span className="text-purple-300">{formatDate(blog?.createdAt)}</span>
+                        <span className="text-slate-300">Saved on</span>
+                        <span className="text-purple-300">{formatDate(note?.createdAt)}</span>
                     </div>
                 </div>
 
@@ -191,7 +179,7 @@ export default function DisplayBlog() {
                         Description
                     </h2>
                     <div className="overflow-x-auto">
-                        <pre className="text-lg leading-relaxed text-slate-300">{blog?.description}</pre>
+                        <pre className="text-lg leading-relaxed text-slate-300">{note?.description}</pre>
                     </div>
                 </div>
 
@@ -230,7 +218,7 @@ export default function DisplayBlog() {
                             }}
                             wrapLongLines={true}
                         >
-                            {blog?.code?.trim() || "// No code provided"}
+                            {note?.code?.trim() || "// No code provided"}
                         </SyntaxHighlighter>
                     </div>
                 </div>

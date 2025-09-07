@@ -15,19 +15,31 @@ datasource db {
 }
 
 model User {
-  id                     String   @id @default(uuid())
-  email                  String   @unique
+  id                     String    @id @default(uuid())
+  email                  String    @unique
   password               String?
   username               String?
-  verificationCode       String   @default("")
+  verificationCode       String    @default("")
   verificationCodeExpiry DateTime?
-  isVerified             Boolean  @default(false)
-  createdAt              DateTime @default(now())
+  isVerified             Boolean   @default(false)
+  createdAt              DateTime  @default(now())
 
   blogs Blog[]
+  notes Note[]
 }
 
 model Blog {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  code        String?
+  createdAt   DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Note {
   id          String   @id @default(uuid())
   title       String
   description String

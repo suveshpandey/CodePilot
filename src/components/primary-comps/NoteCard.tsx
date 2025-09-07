@@ -1,17 +1,16 @@
 import { useRouter } from "next/navigation";
-import { Calendar, User, FileText, Code2, ArrowRight } from "lucide-react";
+import { Calendar, FileText, Code2, ArrowRight } from "lucide-react";
 
 interface BlogProps {
     id: string,
     title: string,
     description: string,
     code: string,
-    postedBy: string,
     postedOn: Date,
     setLoading: (value: boolean) => void;
 }
 
-export default function BlogCard ({id, title, description, code, postedBy, postedOn, setLoading}: BlogProps) {
+export default function NoteCard ({id, title, description, code, postedOn, setLoading}: BlogProps) {
     const router = useRouter();
     
     const formatDate = (date: Date | undefined) => {
@@ -35,7 +34,7 @@ export default function BlogCard ({id, title, description, code, postedBy, poste
         <div
             onClick={() => {
                 setLoading(true);
-                router.push(`/blogs/blog/${id}`)
+                router.push(`/my-notes/note/${id}`)
             }}
             className="w-xl h-80 flex flex-col mx-auto bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-blue-500/30 hover:scale-[1.02] group"
         >
@@ -82,22 +81,13 @@ export default function BlogCard ({id, title, description, code, postedBy, poste
             {/* Footer Section */}
             <div className="p-5 pt-3 border-t border-slate-700/50 bg-slate-800/30 flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mr-2">
-                        <User className="text-white" size={16} />
-                    </div>
-                    <span className="text-slate-300 text-sm">{postedBy}</span>
+                    <Calendar className="text-slate-500" size={16} />
+                    <span className="text-slate-400 text-sm">{formatDate(postedOn)}</span>
                 </div>
                 
-                <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2">
-                        <Calendar className="text-slate-500" size={16} />
-                        <span className="text-slate-400 text-sm">{formatDate(postedOn)}</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-1 text-slate-500 group-hover:text-blue-400 transition-colors ml-4">
-                        <span className="text-sm">View</span>
-                        <ArrowRight className="group-hover:translate-x-1 transition-transform" size={16} />
-                    </div>
+                <div className="flex items-center gap-1 text-slate-500 group-hover:text-blue-400 transition-colors">
+                    <span className="text-sm">Read more</span>
+                    <ArrowRight className="group-hover:translate-x-1 transition-transform" size={16} />
                 </div>
             </div>
         </div>
