@@ -33,38 +33,31 @@ export default function Navbar() {
     }, []);
 
     return (
-        <nav className=" bg-slate-900 h-16 w-full">
+        <nav className="h-16 w-full">
             <div className="h-full mx-auto flex justify-between items-center">
                 {/* Left: Logo */}
-                <div className="flex items-center gap-x-2">
+                <div className="h-full flex items-center gap-x-2">
                     <img className="size-10" src="/code-pilot-icon.png" alt="" />
                     <span className="text-2xl font-bold text-slate-200">CodePilot</span>
                 </div>
 
                 {/* Center: Nav Links */}
-                <div className="hidden md:flex bg-slate-800 px-10 rounded-full py-2 border-1 border-slate-600 space-x-8">
-                    {/* <div
-                    onClick={() => handleSelectNav("dashboard")}
-                    className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "dashboard" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
-                    >
-                        Home
-                    </div> */}
+                <div className="flex bg-slate-800 px-10 rounded-full py-2 border-1 border-slate-600 space-x-8">
                     <div
-                    onClick={() => handleSelectNav("code-editor")}
-                    className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "code-editor" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
+                        onClick={() => handleSelectNav("code-editor")}
+                        className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "code-editor" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
                         IDE
                     </div>
                     <div
-                    onClick={() => handleSelectNav("my-notes")}
-
-                    className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "my-notes" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
+                        onClick={() => handleSelectNav("my-notes")}
+                        className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "my-notes" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
                         My Notes
                     </div>
                     <div
-                    onClick={() => handleSelectNav("blogs")}
-                    className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "blogs" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
+                        onClick={() => handleSelectNav("blogs")}
+                        className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "blogs" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
                         Blogs
                     </div>

@@ -1,6 +1,6 @@
 import { useAppContext } from "@/context/context";
 import { Editor } from "@monaco-editor/react";
-import { Code2, CopyCheck, CopyIcon, RotateCcw } from "lucide-react";
+import { Check, Code2, Copy, CopyCheck, CopyIcon, RotateCcw } from "lucide-react";
 import Loader from "@/components/secondary-comps/Loader";
 import { codeSnippets } from "@/constants";
 import { useState } from "react";
@@ -20,7 +20,7 @@ export default function LeftPanel () {
 
             setTimeout(() => {
                 setIsCopied(false);
-            }, 5000)
+            }, 2000)
         }
     }
 
@@ -40,10 +40,20 @@ export default function LeftPanel () {
                 </div>
                 <div className="flex gap-x-4">
                     <LanguageSelector selectedLanguage={selectedLanguage} onSelectLanguage={onSelectLanguage} />    
-                    <button
+                    {/* <button
                         onClick={handleCopyButton}
                         className="flex items-center justify-center text-slate-300 hover:text-white cursor-pointer"
                         >{isCopied ? <CopyCheck size={18} className="text-green-500" /> : <CopyIcon  size={18} /> }
+                    </button> */}
+                    <button
+                        onClick={handleCopyButton}
+                        className="flex items-center justify-center text-slate-300 hover:text-white cursor-pointer"
+                        >
+                            {isCopied ? (
+                                <Check className="w-4 h-4 text-green-400" />
+                            ) : (
+                                <Copy className="w-4 h-4 text-slate-300" />
+                            )}
                     </button>
                     <button
                         onClick={() => setCode("")}

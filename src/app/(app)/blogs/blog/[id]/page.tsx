@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { ChevronLeft, Trash2, User, Calendar, Code2, Copy, Check } from "lucide-react";
+import { ChevronLeft, Trash2, User, Calendar, Code2, Copy, Check, PenBox, X, FilePen, FilePlus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -29,6 +29,14 @@ export default function DisplayBlog() {
     const [userId, setUserId] = useState<string>();
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [copied, setCopied] = useState<boolean>(false);
+    const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [code, setCode] = useState("");
+    const [success, setSuccess] = useState(false);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+
 
     const router = useRouter();
     const params = useParams<{id: string}>();
@@ -107,6 +115,54 @@ export default function DisplayBlog() {
         setUserId(session?.user.id);
     };
 
+    const handleEditBlog = async () => {
+        try {
+            if (!title || !description) {
+                setError("Title and Description are required");
+                return;
+            }
+
+            setIsEditing(true);
+            setError(null);
+
+            const response = await axios.put(`/api/blogs/${id}`, {
+                title,
+                description,
+                code: code || null,
+                userId: userId,
+            });
+
+            if (!response || response.status === 400) {
+                setError("Failed to edit the note, please try again");
+                return;
+            } else if (response.status === 200) {
+                setSuccess(true);
+                setIsEditing(false);
+                toast.success("Note updated successfully 🚀");
+                // Reset form after a short delay
+                setTimeout(() => {
+                    setIsModelOpen(false);
+                    setSuccess(false);
+                    setTitle("");
+                    setDescription("");
+                    setCode("");
+                }, 1500);
+            }
+        } catch (error) {
+            console.log("Updating note failed, error: ", error);
+            setError("Internal server error");
+            setError(null);
+        } finally {
+            fetchBlogDetails();
+        }
+    };
+
+    useEffect(() => {
+        setTitle(blog?.title || "")
+        setDescription(blog?.description || "")
+        setCode(blog?.code || "")
+    }, [blog, isModelOpen])
+
     useEffect(() => {
         fetchSession();
         fetchBlogDetails();
@@ -137,23 +193,42 @@ export default function DisplayBlog() {
                     </button>
                     
                     {userId === blog?.userId && (
-                        <button 
-                            onClick={deleteBlog}
-                            disabled={isDeleting}
-                            className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isDeleting ? (
-                                <>
-                                    <Loader color="red-300" />
-                                    Deleting...
-                                </>
-                            ) : (
-                                <>
-                                    <Trash2 size={18} />
-                                    Delete Blog
-                                </>
-                            )}
-                        </button>
+                        <div className="flex gap-x-2">
+                            <button 
+                                onClick={() => setIsModelOpen(true)}
+                                disabled={isDeleting}
+                                className="flex items-center gap-2 bg-gray-500/50 hover:bg-gray-500/60 text-gray-300 hover:text-gray-200 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isDeleting ? (
+                                    <>
+                                        <Loader color="red-300" />
+                                        Editing...
+                                    </>
+                                ) : (
+                                    <>
+                                        <PenBox size={18} />
+                                        Edit Blog
+                                    </>
+                                )}
+                            </button>
+                            <button 
+                                onClick={deleteBlog}
+                                disabled={isDeleting}
+                                className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isDeleting ? (
+                                    <>
+                                        <Loader color="red-300" />
+                                        Deleting...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Trash2 size={18} />
+                                        Delete Blog
+                                    </>
+                                )}
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
@@ -235,6 +310,91 @@ export default function DisplayBlog() {
                     </div>
                 </div>
             </div>
+
+            {isModelOpen && (
+                <div className="fixed inset-0 flex justify-center items-center bg-black/60 backdrop-blur-sm z-50 animate-fadeIn">
+                    <div className="bg-gray-800 rounded-2xl shadow-2xl w-[95%] max-w-3xl p-8 relative text-white ">
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setIsModelOpen(false)}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-red-400 transition cursor-pointer">
+                            <X className="w-6 h-6" />
+                        </button>
+                        <div className="flex items-center gap-x-2 mb-6">
+                            <FilePlus className="w-6 h-6 text-indigo-400" strokeWidth={3} />
+                            <h2 className="text-2xl font-bold">Save New Blog</h2>
+                        </div>
+
+                        {/* Error Message */}
+                        {error && (
+                            <p className="text-red-400 mb-4 py-2 px-4 rounded-md text-sm bg-red-500/20">{error}</p>
+                        )}
+
+                        {/* Title */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Title</label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full border border-gray-600 rounded-lg p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Enter blog title"
+                            />
+                        </div>
+
+                        {/* Description */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                className="w-full border border-gray-600 rounded-lg p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                rows={3}
+                                placeholder="Enter blog description"
+                            />
+                        </div>
+
+                        {/* Code */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Code</label>
+                            <textarea
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                                className="w-full border border-gray-600 rounded-lg font-mono p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                rows={6}
+                                placeholder="Enter code snippet"
+                            />
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex gap-4 mt-6">
+                            {/* Cancel */}
+                            <button
+                                onClick={() => setIsModelOpen(false)}
+                                className="flex-1 bg-gray-600 hover:bg-gray-500 text-white rounded-lg py-3 font-medium transition disabled:opacity-50 cursor-pointer"
+                                disabled={loading}
+                            >
+                                Cancel
+                            </button>
+
+                            {/* Submit */}
+                            <button
+                                onClick={handleEditBlog}
+                                disabled={loading || success}
+                                className={`flex-1 flex items-center justify-center gap-2 rounded-lg py-3 font-medium transition cursor-pointer
+                                    ${success
+                                        ? "bg-green-600 hover:bg-green-500"
+                                        : "bg-indigo-700 hover:bg-indigo-600"}
+                                    ${isEditing ? "opacity-70 cursor-not-allowed" : ""}
+                                `}
+                            >
+                                {isEditing && <Loader color={"#fff"} />}
+                                {success ? "Blog Updated!" : "Update Blog"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

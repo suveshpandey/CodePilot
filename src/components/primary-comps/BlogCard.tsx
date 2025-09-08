@@ -37,7 +37,7 @@ export default function BlogCard ({id, title, description, code, postedBy, poste
                 setLoading(true);
                 router.push(`/blogs/blog/${id}`)
             }}
-            className="w-xl h-80 flex flex-col mx-auto bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-blue-500/30 hover:scale-[1.02] group"
+            className="w-[30vw] h-80 flex flex-col mx-auto bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-xl hover:border-blue-500/30 hover:scale-[1.02] group"
         >
             {/* Header with gradient and icon */}
             <div className="p-5 pb-4 border-b border-slate-700/50">

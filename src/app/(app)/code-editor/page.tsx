@@ -8,8 +8,12 @@ import { codeSnippets } from "@/constants";
 import { useAppContext } from "@/context/context";
 import { executeCode } from "@/lib";
 import { CloudCheck } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BiSolidLeftArrow } from "react-icons/bi";
+import { FilePlus , X } from "lucide-react";
+import { getSession } from "next-auth/react";
+import axios from "axios";
+
 
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { toast } from "sonner";
@@ -17,6 +21,15 @@ import { toast } from "sonner";
 
 export default function CodeEditor() {
     const {code, setCode, selectedLanguage, setSelectedLanguage, setOutput, setOutputError, isLoading, setIsLoading, setPartialError, userCodeInput} = useAppContext();
+    const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [addBlogLoading, setAddBlogLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
+    const [userId, setUserId] = useState<string>();
+    
 
     const handleRunCode = async () => {
 
@@ -56,11 +69,59 @@ export default function CodeEditor() {
         } finally {
             setIsLoading(false);
         }
-    }
+    }  
+
+    const handleAddBlog = async () => {
+        console.log("save note called")
+        try {
+            if (!title || !description) {
+                setError("Title and Description are required");
+                return;
+            }
+
+            setAddBlogLoading(true);
+            setError(null);
+
+            const response = await axios.post("/api/notes", {
+                title,
+                description,
+                code: code || null,
+                userId: userId,
+            });
+
+            if (!response || response.status === 400) {
+                setError("Failed to save the note, please try again");
+                return;
+            } else if (response.status === 201) {
+                setSuccess(true);
+                setAddBlogLoading(false);
+                toast.success("Note saved successfully 🚀");
+                // Reset form after a short delay
+                setTimeout(() => {
+                    setIsModelOpen(false);
+                    setSuccess(false);
+                    setTitle("");
+                    setDescription("");
+                    setCode("");
+                }, 1500);
+            }
+        } catch (error) {
+            console.log("Saving note failed, error: ", error);
+            setError("Internal server error");
+            setIsLoading(false);
+            setError(null);
+        }
+    };
     
+    const fetchSession = async () => {
+        const session = await getSession();
+        setUserId(session?.user.id);
+    };
+
     useEffect(() => {
         setSelectedLanguage("cpp");
         setCode(codeSnippets[selectedLanguage]);
+        fetchSession();
     }, []);
 
     useEffect(() => {
@@ -112,18 +173,99 @@ export default function CodeEditor() {
                         Run
                     </button>
                     <button 
-                        onClick={handleRunCode} 
+                        onClick={() => setIsModelOpen(true)} 
                         disabled={isLoading}
                         className=" w-26 h-10 border-1 disabled:cursor-no-drop bg-green-600 border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-white font-semibold text-lg cursor-pointer "
-                        > 
-                        {isLoading ? (
-                            <Loader color={"green-500"} />
-                        ) : (
-                            <CloudCheck />
-                        )}
-                        Save
+                    > 
+                        <CloudCheck /> Save
                     </button>
                 </div>
+
+                {isModelOpen && (
+                    <div className="fixed inset-0 flex justify-center items-center bg-black/60 backdrop-blur-sm z-50 animate-fadeIn">
+                        <div className="bg-gray-800 rounded-2xl shadow-2xl w-[95%] max-w-3xl p-8 relative text-white ">
+                            {/* Close Button */}
+                            <button
+                                onClick={() => setIsModelOpen(false)}
+                                className="absolute top-4 right-4 text-gray-400 hover:text-red-400 transition cursor-pointer">
+                                <X className="w-6 h-6" />
+                            </button>
+                            <div className="flex items-center gap-x-2 mb-6">
+                                <FilePlus className="w-6 h-6 text-indigo-400" strokeWidth={3} />
+                                <h2 className="text-2xl font-bold">Save New Note</h2>
+                            </div>
+
+                            {/* Error Message */}
+                            {error && (
+                                <p className="text-red-400 mb-4 py-2 px-4 rounded-md text-sm bg-red-500/20">{error}</p>
+                            )}
+
+                            {/* Title */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-300 mb-1">Title</label>
+                                <input
+                                    type="text"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    className="w-full border border-gray-600 rounded-lg p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    placeholder="Enter note title"
+                                />
+                            </div>
+
+                            {/* Description */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                                <textarea
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    className="w-full border border-gray-600 rounded-lg p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    rows={3}
+                                    placeholder="Enter note description"
+                                />
+                            </div>
+
+                            {/* Code */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-300 mb-1">Code</label>
+                                <textarea
+                                    value={code}
+                                    onChange={(e) => setCode(e.target.value)}
+                                    className="w-full border border-gray-600 rounded-lg font-mono p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    rows={6}
+                                    placeholder="Enter code snippet"
+                                />
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex gap-4 mt-6">
+                                {/* Cancel */}
+                                <button
+                                    onClick={() => setIsModelOpen(false)}
+                                    className="flex-1 bg-gray-600 hover:bg-gray-500 text-white rounded-lg py-3 font-medium transition disabled:opacity-50 cursor-pointer"
+                                    disabled={loading}
+                                >
+                                    Cancel
+                                </button>
+
+                                {/* Submit */}
+                                <button
+                                    onClick={handleAddBlog}
+                                    disabled={loading || success}
+                                    className={`flex-1 flex items-center justify-center gap-2 rounded-lg py-3 font-medium transition cursor-pointer
+                                        ${success
+                                            ? "bg-green-600 hover:bg-green-500"
+                                            : "bg-indigo-700 hover:bg-indigo-600"}
+                                        ${addBlogLoading ? "opacity-70 cursor-not-allowed" : ""}
+                                    `}
+                                >
+                                    {addBlogLoading && <Loader color={"#fff"} />}
+                                    {success ? "Note Saved!" : "Save Note"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
             </div>
         </div>
     )

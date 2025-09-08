@@ -1,6 +1,5 @@
 "use client"
 
-import BlogCard from "@/components/primary-comps/BlogCard";
 import Navbar from "@/components/primary-comps/Navbar";
 import { useEffect, useState } from "react";
 import { BiAddToQueue } from "react-icons/bi";
@@ -158,7 +157,7 @@ export default function Blogs() {
 
             {/* Blogs Grid */}
             {
-                notes.length > 0 ? <div className="h-auto w-full pt-10 pb-10 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 justify-start items-center gap-y-7 overflow-y-auto">
+                notes.length > 0 ? <div className="h-auto w-full pt-10 pb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-start items-center gap-y-7 overflow-y-auto">
                         {notes.length > 0 && filteredBlogs.map((note) => (
                             <NoteCard
                                 key={note.id}

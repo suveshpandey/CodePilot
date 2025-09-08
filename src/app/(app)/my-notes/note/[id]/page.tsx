@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { ChevronLeft, Trash2, User, Calendar, Code2, Copy, Check } from "lucide-react";
+import { ChevronLeft, Trash2, User, Calendar, Code2, Copy, Check, PenBox } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -9,6 +9,8 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { getSession } from "next-auth/react";
 import { toast } from "sonner";
 import Loader from "@/components/secondary-comps/Loader";
+import { FilePlus , X } from "lucide-react";
+
 
 type NoteType = {
     id: string,
@@ -19,36 +21,44 @@ type NoteType = {
     userId: string,
 } 
 
-export default function DisplayBlog() {
+export default function DisplayNote() {
     const [note, setNote] = useState<NoteType | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [userId, setUserId] = useState<string>();
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [copied, setCopied] = useState<boolean>(false);
+    const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [code, setCode] = useState("");
+    const [success, setSuccess] = useState(false);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+
 
     const router = useRouter();
     const params = useParams<{id: string}>();
     const id = params.id;
 
-    const fetchBlogDetails = async () => {
+    const fetchNoteDetails = async () => {
         try {
             setLoading(true);
             const response = await axios.get<{note: NoteType}>(`/api/notes/note/${id}`);
             if (!response) {
-                toast.error("Unable to fetch blog details, please refresh the page");
+                toast.error("Unable to fetch note details, please refresh the page");
             } else if (response.status === 404) {
-                toast.error("Blog not found");
+                toast.error("Note not found");
             } 
             setNote(response.data.note);
         } catch (error) {
-            console.log("Failed to fetch the blog, error: ", error);
+            console.log("Failed to fetch the note, error: ", error);
             toast.error("Internal server error, please try again");
         } finally {
             setLoading(false);
         }
     }
 
-    const deleteBlog = async () => {
+    const deleteNote = async () => {
         if (!confirm("Are you sure you want to delete this note? This action cannot be undone.")) return;
         
         try {
@@ -103,10 +113,58 @@ export default function DisplayBlog() {
         setUserId(session?.user.id);
     };
 
+    const handleEditNote = async () => {
+        try {
+            if (!title || !description) {
+                setError("Title and Description are required");
+                return;
+            }
+
+            setIsEditing(true);
+            setError(null);
+
+            const response = await axios.put(`/api/notes/note/${id}`, {
+                title,
+                description,
+                code: code || null,
+                userId: userId,
+            });
+
+            if (!response || response.status === 400) {
+                setError("Failed to edit the note, please try again");
+                return;
+            } else if (response.status === 200) {
+                setSuccess(true);
+                setIsEditing(false);
+                toast.success("Note updated successfully 🚀");
+                // Reset form after a short delay
+                setTimeout(() => {
+                    setIsModelOpen(false);
+                    setSuccess(false);
+                    setTitle("");
+                    setDescription("");
+                    setCode("");
+                }, 1500);
+            }
+        } catch (error) {
+            console.log("Updating note failed, error: ", error);
+            setError("Internal server error");
+            setError(null);
+        } finally {
+            fetchNoteDetails();
+        }
+    };
+
     useEffect(() => {
         fetchSession();
-        fetchBlogDetails();
+        fetchNoteDetails();
     }, []);
+
+    useEffect(() => {
+        setTitle(note?.title || "")
+        setDescription(note?.description || "")
+        setCode(note?.code || "")
+    }, [note, isModelOpen])
 
     if (loading) {
         return (
@@ -131,10 +189,19 @@ export default function DisplayBlog() {
                         <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                         Back to My-Notes
                     </button>
-                    
-                    {userId === note?.userId && (
+                    <div className="flex gap-x-2">
                         <button 
-                            onClick={deleteBlog}
+                            onClick={() => setIsModelOpen(true)}
+                            disabled={isDeleting}
+                            className="flex items-center gap-2 bg-gray-500/50 hover:bg-gray-500/60 text-gray-300 hover:text-gray-200 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <>
+                                <PenBox size={18} />
+                                Edit Note
+                            </>    
+                        </button>
+                        <button 
+                            onClick={deleteNote}
                             disabled={isDeleting}
                             className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >
@@ -146,15 +213,17 @@ export default function DisplayBlog() {
                             ) : (
                                 <>
                                     <Trash2 size={18} />
-                                    Delete Blog
+                                    Delete Note
                                 </>
                             )}
                         </button>
-                    )}
+                        
+                    </div>
+
                 </div>
             </div>
 
-            {/* Blog Content */}
+            {/* Note Content */}
             <div className="max-w-4xl mx-auto px-6 py-8">
                 {/* Title */}
                 <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
@@ -223,6 +292,91 @@ export default function DisplayBlog() {
                     </div>
                 </div>
             </div>
+
+            {isModelOpen && (
+                <div className="fixed inset-0 flex justify-center items-center bg-black/60 backdrop-blur-sm z-50 animate-fadeIn">
+                    <div className="bg-gray-800 rounded-2xl shadow-2xl w-[95%] max-w-3xl p-8 relative text-white ">
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setIsModelOpen(false)}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-red-400 transition cursor-pointer">
+                            <X className="w-6 h-6" />
+                        </button>
+                        <div className="flex items-center gap-x-2 mb-6">
+                            <FilePlus className="w-6 h-6 text-indigo-400" strokeWidth={3} />
+                            <h2 className="text-2xl font-bold">Save New Note</h2>
+                        </div>
+
+                        {/* Error Message */}
+                        {error && (
+                            <p className="text-red-400 mb-4 py-2 px-4 rounded-md text-sm bg-red-500/20">{error}</p>
+                        )}
+
+                        {/* Title */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Title</label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full border border-gray-600 rounded-lg p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Enter note title"
+                            />
+                        </div>
+
+                        {/* Description */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                className="w-full border border-gray-600 rounded-lg p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                rows={3}
+                                placeholder="Enter note description"
+                            />
+                        </div>
+
+                        {/* Code */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Code</label>
+                            <textarea
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                                className="w-full border border-gray-600 rounded-lg font-mono p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                rows={6}
+                                placeholder="Enter code snippet"
+                            />
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex gap-4 mt-6">
+                            {/* Cancel */}
+                            <button
+                                onClick={() => setIsModelOpen(false)}
+                                className="flex-1 bg-gray-600 hover:bg-gray-500 text-white rounded-lg py-3 font-medium transition disabled:opacity-50 cursor-pointer"
+                                disabled={loading}
+                            >
+                                Cancel
+                            </button>
+
+                            {/* Submit */}
+                            <button
+                                onClick={handleEditNote}
+                                disabled={loading || success}
+                                className={`flex-1 flex items-center justify-center gap-2 rounded-lg py-3 font-medium transition cursor-pointer
+                                    ${success
+                                        ? "bg-green-600 hover:bg-green-500"
+                                        : "bg-indigo-700 hover:bg-indigo-600"}
+                                    ${isEditing ? "opacity-70 cursor-not-allowed" : ""}
+                                `}
+                            >
+                                {isEditing && <Loader color={"#fff"} />}
+                                {success ? "Note Updated!" : "Update Note"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
