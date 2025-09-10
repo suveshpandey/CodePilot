@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { getSession } from 'next-auth/react';
 
-type NavOptions = "dashboard" | "code-editor" | "my-notes" | "blogs";
+type NavOptions = "code-editor" | "my-notes" | "blogs" | "videos";
 
 export default function Navbar() {
     const [selectedNav, setSelectedNav] = useState<NavOptions>("code-editor");
@@ -18,10 +18,10 @@ export default function Navbar() {
     }
 
     useEffect(() => {
-        if(pathname.startsWith("/dashboard")) setSelectedNav("dashboard");
-        else if(pathname.startsWith("/code-editor")) setSelectedNav("code-editor");
+        if(pathname.startsWith("/code-editor")) setSelectedNav("code-editor");
         else if(pathname.startsWith("/my-notes")) setSelectedNav("my-notes");
         else if(pathname.startsWith("/blogs")) setSelectedNav("blogs");
+        else if(pathname.startsWith("/videos")) setSelectedNav("videos");
     }, [pathname])
 
     useEffect(() => {
@@ -60,6 +60,12 @@ export default function Navbar() {
                         className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "blogs" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
                     >
                         Blogs
+                    </div>
+                    <div
+                        onClick={() => handleSelectNav("videos")}
+                        className={`px-3 py-1 text-sm font-medium hover:text-indigo-400 ${selectedNav === "videos" ? "text-indigo-400 border-b border-b-indigo-400" : "text-white"} transition-all duration-200 cursor-pointer`}
+                    >
+                        Videos
                     </div>
                 </div>
 

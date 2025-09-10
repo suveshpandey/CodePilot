@@ -178,8 +178,6 @@ export default function Blogs() {
                 className="bg-indigo-700 hover:bg-indigo-600 size-15 fixed bottom-10 right-10 rounded-full text-white flex justify-center items-center cursor-pointer shadow-lg transition-transform hover:scale-105">
                 <BiAddToQueue className="text-3xl" />
             </button>
-
-            {/* Add Blog Modal */}
             {isModelOpen && (
                 <div className="fixed inset-0 flex justify-center items-center bg-black/60 backdrop-blur-sm z-50 animate-fadeIn">
                     <div className="bg-gray-800 rounded-2xl shadow-2xl w-[95%] max-w-3xl p-8 relative text-white ">
