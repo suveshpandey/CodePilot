@@ -7,7 +7,7 @@ export default function UserCodeInput() {
         <div className="w-full h-full p-4 bg-slate-800 flex flex-col">
             {/* Header */}
             <p className="text-slate-300 mb-2 text-md font-medium">
-                Enter the desired input:
+                Enter the initial input ( if any ):
             </p>
 
             {/* Textarea */}
