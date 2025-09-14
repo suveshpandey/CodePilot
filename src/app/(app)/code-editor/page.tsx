@@ -231,7 +231,7 @@ export default function CodeEditor() {
                         className=" w-26 h-10 border-1 disabled:cursor-no-drop bg-green-600 border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-white hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
                         > 
                         {isLoading ? (
-                            <Loader color={"green-500"} />
+                            <Loader color={"white"} />
                         ) : (
                             <BiSolidLeftArrow />
                         )}

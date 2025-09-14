@@ -3,8 +3,9 @@ import { RotateCcw, Sparkles, Terminal, TerminalSquare } from "lucide-react";
 import OutputDisplay from "./OutputDisplay";
 import Badge from "../secondary-comps/Badge";
 import OutputComparison from "./OutputComparison";
-import AskAIBlocl from "./AskAIBlock";
 import AskAIBlock from "./AskAIBlock";
+import { BiBulb } from "react-icons/bi";
+import ErrorHintsBlock from "./HintAIBlock";
 
 
 //this is the starting/parent compoentnt of all right panel components
@@ -36,6 +37,8 @@ export default function RightPanel () {
                     <Badge icon={TerminalSquare} color={"text-yellow-300"} label={"Compare"} selectionOption={"compare"} isSelected={rightPanelOption === "compare"}/>
                     <div className="bg-slate-400 w-0.5 my-1"></div>
                     <Badge icon={Sparkles} color={"text-red-300"} label={"Ask AI"}  selectionOption={"askAI"} isSelected={rightPanelOption === "askAI"}/>
+                    <div className="bg-slate-400 w-0.5 my-1"></div>
+                    <Badge icon={BiBulb} color={"text-green-300"} label={"Error Analysis"}  selectionOption={"errorAnalysis"} isSelected={rightPanelOption === "errorAnalysis"}/>
                 </div>
                 <div>
                     <button
@@ -49,7 +52,8 @@ export default function RightPanel () {
                 {
                     rightPanelOption === "output" && <OutputDisplay /> ||
                     rightPanelOption === "compare" && <OutputComparison /> ||
-                    rightPanelOption === "askAI" && <AskAIBlock />
+                    rightPanelOption === "askAI" && <AskAIBlock /> ||
+                    rightPanelOption === "errorAnalysis" && <ErrorHintsBlock />
                 }
             </div>
         </div>
