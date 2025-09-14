@@ -114,7 +114,7 @@ export default function Blogs() {
     return (
         <div className="h-screen w-full px-10 bg-gray-900 flex flex-col justify-start gap-y-2">
             {/* Navbar */}
-            <div className="h-[8%] w-full fixed top-0 left-0 px-10">
+            <div className="h-[8%] w-full fixed top-0 left-0">
                 <Navbar />
             </div>
 
@@ -151,31 +151,18 @@ export default function Blogs() {
             {/* Blogs Grid */}
             {
                 blogs.length > 0 ? <div className="h-auto w-full pt-10 pb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-start items-center gap-y-7 overflow-y-auto">
-                    {/* { blogs.length > 0 && ( 
-                        blogs.map((blog) => (
-                            <BlogCard
-                                key={blog.id}
-                                id={blog.id}
-                                title={blog.title}
-                                description={blog.description}
-                                code={blog.code || ""}
-                                postedBy={blog.user.username}
-                                postedOn={new Date(blog.createdAt)}
-                                setLoading={setLoading}
-                            />
-                        )))} */}
-                        {filteredBlogs.map((blog) => (
-                            <BlogCard
-                                key={blog.id}
-                                id={blog.id}
-                                title={blog.title}
-                                description={blog.description}
-                                code={blog.code || ""}
-                                postedBy={blog.user.username}
-                                postedOn={new Date(blog.createdAt)}
-                                setLoading={setLoading}
-                            />
-                        ))}
+                    {filteredBlogs.map((blog) => (
+                        <BlogCard
+                            key={blog.id}
+                            id={blog.id}
+                            title={blog.title}
+                            description={blog.description}
+                            code={blog.code || ""}
+                            postedBy={blog.user.username}
+                            postedOn={new Date(blog.createdAt)}
+                            setLoading={setLoading}
+                        />
+                    ))}
                 </div> : <div className="h-full w-full flex items-center justify-center text-slate-300">No blogs found</div>
             }
         

@@ -282,7 +282,7 @@ export default function ChatPage() {
                             )}
                             
                             <div
-                                className={`max-w-[80%] rounded-2xl px-4 shadow-lg ${
+                                className={`max-w-[80%] rounded-2xl px-4 shadow-lg overflow-x-auto ${
                                     msg.role === "user"
                                         ? " bg-gray-700 text-white rounded-br-md"
                                         : "bg-slate-700/80 border border-slate-600/50 rounded-bl-md"

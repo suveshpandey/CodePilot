@@ -35,11 +35,11 @@ export default function Home() {
             CodePilot helps beginners learn programming through an interactive AI-powered platform. Write, test, and debug code with real-time guidance from our intelligent assistant.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md flex items-center justify-center transition-colors">
+            <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md flex items-center justify-center transition-colors">
               Start Coding Now
               <ChevronRight className="ml-2 h-5 w-5" />
             </button>
-            <button className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-md flex items-center justify-center transition-colors">
+            <button className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-md flex items-center justify-center transition-colors">
               <Play className="mr-2 h-5 w-5" />
               Watch Demo
             </button>
@@ -179,12 +179,12 @@ export default function Home() {
             Join thousands of learners who are building their programming skills with AI assistance
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md text-lg font-semibold transition-colors">
+            <button onClick={() => router.push("/sign-up")} className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md text-lg font-semibold transition-colors">
               Create Free Account
             </button>
-            <button className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-md text-lg font-semibold transition-colors">
+            {/* <button className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-md text-lg font-semibold transition-colors">
               Take a Tour
-            </button>
+            </button> */}
           </div>
         </div>
       </section>

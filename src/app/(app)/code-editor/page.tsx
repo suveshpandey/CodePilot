@@ -141,12 +141,12 @@ export default function CodeEditor() {
 
 
     return (
-        <div className="min-h-screen h-auto w-full bg-gray-900 flex flex-col justify-start items-start px-10 gap-y-0">
+        <div className="min-h-screen h-auto w-full bg-gray-900 flex flex-col justify-start items-start gap-y-0">
             <div className="h-16 w-full">
                 <Navbar />
             </div>
             
-            <div className="h-[calc(100vh-4rem)] w-full max-h-screen flex flex-col gap-y-2 ">  
+            <div className="h-[calc(100vh-4rem)] w-full max-h-screen flex flex-col gap-y-2 px-10 ">  
                 <PanelGroup autoSaveId="example" direction="horizontal">
                     <Panel defaultSize={50} minSize={30}>
                         <LeftPanel />

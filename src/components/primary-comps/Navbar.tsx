@@ -127,7 +127,7 @@ export default function Navbar() {
     }, []);
 
     return (
-            <nav className="h-16 w-full bg-slate-900 ">
+            <nav className="h-16 w-full px-10">
                 <div className="h-full mx-auto flex justify-between items-center">
                     {/* Left: Logo */}
                     <div className="flex items-center gap-x-2 cursor-pointer" onClick={() => router.push("/")}>

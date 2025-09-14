@@ -121,7 +121,7 @@ export default function Blogs() {
     return (
         <div className="h-screen w-full px-10 bg-gray-900 flex flex-col justify-start gap-y-2">
             {/* Navbar */}
-            <div className="h-[8%] w-full fixed top-0 left-0 px-10">
+            <div className="h-[8%] w-full fixed top-0 left-0">
                 <Navbar />
             </div>
 

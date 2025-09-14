@@ -59,8 +59,6 @@ export default function DisplayNote() {
     }
 
     const deleteNote = async () => {
-        if (!confirm("Are you sure you want to delete this note? This action cannot be undone.")) return;
-        
         try {
             setIsDeleting(true);
             const response = await axios.delete(`/api/notes/note/${id}`);
@@ -168,7 +166,7 @@ export default function DisplayNote() {
 
     if (loading) {
         return (
-            <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
+            <div className="min-h-screen w-full bg-slate-900 flex items-center justify-center">
                 <div className="flex flex-col items-center">
                     <Loader color="white" />
                     <p className="mt-4 text-slate-300">Loading your note...</p>
@@ -178,7 +176,7 @@ export default function DisplayNote() {
     }
 
     return (
-        <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 to-slate-800 text-slate-300">
+        <div className="min-h-screen w-full bg-slate-900 text-slate-300">
             {/* Header with Back button */}
             <div className="w-full px-6 py-4 bg-slate-800/50 backdrop-blur-sm border-b border-slate-700/30">
                 <div className="max-w-4xl mx-auto flex items-center justify-between">

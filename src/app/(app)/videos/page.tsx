@@ -116,7 +116,7 @@ export default function VideosPage() {
             {/* Fixed Header */}
             <div className="fixed top-0 left-0 w-full z-50">
                 {/* Navbar */}
-                <div className="h-16 flex items-center px-10">
+                <div className="h-16 flex items-center">
                     <Navbar />
                 </div>
 

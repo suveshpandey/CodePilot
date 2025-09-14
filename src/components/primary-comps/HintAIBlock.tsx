@@ -84,26 +84,26 @@ export default function ErrorHintsBlock() {
         {/* Main Content */}
         <div className="flex items-start justify-start flex-1">
             {/* Left Side */}
-            <div className="w-[50%] p-4 flex flex-col items-start justify-between">
-            <p className="text-slate-400 mb-2 text-md font-medium">
-                Expected output:
-            </p>
-            <div className="h-full w-full gap-y-10 flex flex-col items-center justify-between">
-                <textarea
-                name="user-outout"
-                id="user-output"
-                value={userCodeOutput}
-                onChange={(e) => setUserCodeOutput(e.target.value)}
-                placeholder="elements: 3, 0, -1, 2"
-                className="w-[70%] p-3 rounded-md bg-slate-900 text-slate-200 placeholder-slate-500 border border-slate-600 focus:border-slate-400 focus:outline-none transition-colors"
-                />
-                <button
-                onClick={handleSubmit}
-                className="bg-slate-300 hover:bg-slate-200 text-slate-900 w-40 h-10 rounded-full font-medium cursor-pointer shadow-sm transition"
-                >
-                Get Hints
-                </button>
-            </div>
+            <div className="w-[50%] px-4 flex flex-col items-start justify-between">
+                <p className="text-slate-400 mb-2 text-md font-medium">
+                    Expected output:
+                </p>
+                <div className="h-full w-full gap-y-10 flex flex-col items-center justify-between">
+                    <textarea
+                    name="user-outout"
+                    id="user-output"
+                    value={userCodeOutput}
+                    onChange={(e) => setUserCodeOutput(e.target.value)}
+                    placeholder="elements: 3, 0, -1, 2"
+                    className="w-[70%] p-3 rounded-md bg-slate-900 text-slate-200 placeholder-slate-500 border border-slate-600 focus:border-slate-400 focus:outline-none transition-colors"
+                    />
+                    <button
+                    onClick={handleSubmit}
+                    className="bg-slate-300 hover:bg-slate-200 text-slate-900 w-40 h-10 rounded-full font-medium cursor-pointer shadow-sm transition"
+                    >
+                    Get Hints
+                    </button>
+                </div>
             </div>
 
             {/* Divider */}
