@@ -14,10 +14,6 @@ type GeminiResponse = {
     output: string;
 };
 
-type Message = {
-    role: "user" | "ai";
-    content: string;
-};
 
 // Sub-block of "Error Analysis Section"
 export default function ErrorHintsBlock() {
@@ -46,13 +42,15 @@ export default function ErrorHintsBlock() {
         setIsAiLoading(true);
 
         try {
-            
             const response = await axios.post<GeminiResponse>("/api/gemini", {
                 prompt: prompt,
                 model_name: "gemini-2.5-pro",
             });
 
-            if (!response) throw new Error("Failed to get response from gemini");
+            if (!response) {
+                throw new Error("Failed to get response from gemini");
+                toast.error("Failed to get response from gemini");
+            }
 
             setAiHints(response.data.output);
         

@@ -7,7 +7,7 @@ import RightPanel from "@/components/primary-comps/RightPanel";
 import { codeSnippets } from "@/constants";
 import { useAppContext } from "@/context/context";
 import { executeCode } from "@/lib";
-import { CloudCheck } from "lucide-react";
+import { BrainCircuit, CloudCheck, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BiSolidLeftArrow } from "react-icons/bi";
 import { FilePlus , X } from "lucide-react";
@@ -18,9 +18,12 @@ import axios from "axios";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { toast } from "sonner";
 
+type GeminiResponse = {
+    output: string;
+};
 
 export default function CodeEditor() {
-    const {code, setCode, selectedLanguage, setSelectedLanguage, setOutput, setOutputError, isLoading, setIsLoading, setPartialError, userCodeInput} = useAppContext();
+    const {code, setCode, output, selectedLanguage, setSelectedLanguage, setOutput, setOutputError, isLoading, setIsLoading, setPartialError, userCodeInput} = useAppContext();
     const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -29,6 +32,7 @@ export default function CodeEditor() {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
     const [userId, setUserId] = useState<string>();
+    const [aiFixLoading, setAIFixLoading] = useState(false);
     
 
     const handleRunCode = async () => {
@@ -112,6 +116,55 @@ export default function CodeEditor() {
             setError(null);
         }
     };
+
+    const handleFixCode = async () => {
+        const prompt = `
+            You are a code fixer.
+            The student's code is:
+
+            ${code}
+            --------
+            The actual output is:
+            ${output}
+            --------
+            Your task:
+            - Identify and fix mistakes in the student's code.
+            - Return ONLY the corrected code in the same programming language.
+            - Do NOT include explanations, comments, markdown formatting (like \`\`\`), or extra text.
+            - Output must be plain code only.
+        `;
+
+
+        try {
+            if (!code || code === "") {
+                toast.warning("Code not provided");
+                return;
+            }
+            setAIFixLoading(true);
+            const response = await axios.post<GeminiResponse>("/api/gemini", {
+                prompt: prompt,
+                model_name: "gemini-2.5-pro"
+            });
+
+            if (!response) {
+                throw new Error("Failed to get response from gemini");
+                toast.error("Failed to get response from gemini");
+            }
+
+            setCode(response.data.output);
+
+        } catch (error: any) {
+            if (error.isAxiosError) {
+                toast.error(error.response?.data?.message || "API request failed");
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Unknown error occurred");
+            }
+        } finally {
+            setAIFixLoading(false);
+        }
+    }
     
     const fetchSession = async () => {
         const session = await getSession();
@@ -161,9 +214,21 @@ export default function CodeEditor() {
 
                 <div className="w-full bg-slate-900 flex items-center justify-center mb-2 gap-x-2">
                     <button 
+                        onClick={handleFixCode}
+                        disabled={aiFixLoading}
+                        className=" w-26 h-10 border-1 disabled:cursor-no-drop border-yellow-600 hover:bg-yellow-500 shadow-sm shadow-yellow-500 flex items-center justify-center gap-x-2 rounded-md text-yellow-500 hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
+                        >
+                        {aiFixLoading ? (
+                            <Loader color={"yellow-500"} />
+                        ) : (
+                            <Sparkles />
+                        )}
+                        Fix
+                    </button>
+                    <button 
                         onClick={handleRunCode} 
                         disabled={isLoading}
-                        className=" w-26 h-10 border-1 disabled:cursor-no-drop border-green-600 hover:bg-green-600 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-green-500 hover:text-white font-semibold text-lg cursor-pointer "
+                        className=" w-26 h-10 border-1 disabled:cursor-no-drop bg-green-600 border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-white hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
                         > 
                         {isLoading ? (
                             <Loader color={"green-500"} />
@@ -175,7 +240,7 @@ export default function CodeEditor() {
                     <button 
                         onClick={() => setIsModelOpen(true)} 
                         disabled={isLoading}
-                        className=" w-26 h-10 border-1 disabled:cursor-no-drop bg-green-600 border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-white font-semibold text-lg cursor-pointer "
+                        className=" w-26 h-10 border-1 disabled:cursor-no-drop border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-green-500 hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
                     > 
                         <CloudCheck /> Save
                     </button>
