@@ -36,7 +36,7 @@ export default function RightPanel () {
                     <div className="bg-slate-400 w-0.5 my-1"></div>
                     <Badge icon={TerminalSquare} color={"text-yellow-300"} label={"Compare"} selectionOption={"compare"} isSelected={rightPanelOption === "compare"}/>
                     <div className="bg-slate-400 w-0.5 my-1"></div>
-                    <Badge icon={Sparkles} color={"text-red-300"} label={"Ask AI"}  selectionOption={"askAI"} isSelected={rightPanelOption === "askAI"}/>
+                    <Badge icon={Sparkles} color={"text-yellow-500"} label={"Ask AI"}  selectionOption={"askAI"} isSelected={rightPanelOption === "askAI"}/>
                     <div className="bg-slate-400 w-0.5 my-1"></div>
                     <Badge icon={BiBulb} color={"text-green-300"} label={"Error Analysis"}  selectionOption={"errorAnalysis"} isSelected={rightPanelOption === "errorAnalysis"}/>
                 </div>

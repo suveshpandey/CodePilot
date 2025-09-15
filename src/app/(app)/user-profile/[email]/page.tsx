@@ -83,9 +83,9 @@ export default function UserProfile() {
           <div className="flex items-center justify-between">
             <button
               onClick={() => router.back()}
-              className="flex items-center text-slate-400 hover:text-slate-200 hover:bg-slate-700 px-4 py-1 rounded-md transition-colors cursor-pointer"
+              className="flex items-center text-slate-400 hover:text-slate-200 hover:bg-slate-700 px-4 py-1 rounded-md transition-colors cursor-pointer group"
             >
-              <ChevronLeft className="w-5 h-5 mr-1" />
+              <ChevronLeft className="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-all duration-200" />
               Back
             </button>
             <div className="w-20"></div> {/* Spacer for balance */}
@@ -104,9 +104,6 @@ export default function UserProfile() {
                 <div className="w-24 h-24 bg-gradient-to-br from-violet-600 to-purple-700 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                   {user.username?.charAt(0).toUpperCase() || "U"}
                 </div>
-                <button className="absolute bottom-0 right-0 bg-slate-700 hover:bg-slate-600 p-2 rounded-full border border-slate-600 transition-colors">
-                  <Camera className="w-4 h-4" />
-                </button>
               </div>
 
               {/* User Info */}
@@ -195,7 +192,7 @@ export default function UserProfile() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
             <div className="text-2xl font-bold text-violet-400 mb-2">12</div>
             <div className="text-sm text-slate-400">Projects Created</div>
@@ -210,7 +207,7 @@ export default function UserProfile() {
             <div className="text-2xl font-bold text-violet-400 mb-2">3</div>
             <div className="text-sm text-slate-400">Days Active</div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client"
 
-import { Code2, Bot, Brain, Zap, Shield, Users, ChevronRight, Play } from 'lucide-react';
+import { Code2, Bot, Brain, Zap, Shield, Users, ChevronRight, Play, Github } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -40,8 +40,8 @@ export default function Home() {
               <ChevronRight className="ml-2 h-5 w-5" />
             </button>
             <button className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-md flex items-center justify-center transition-colors">
-              <Play className="mr-2 h-5 w-5" />
-              Watch Demo
+              <Github className="mr-2 h-5 w-5" />
+              Give a Star
             </button>
           </div>
         </div>

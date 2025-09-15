@@ -7,7 +7,7 @@ import RightPanel from "@/components/primary-comps/RightPanel";
 import { codeSnippets } from "@/constants";
 import { useAppContext } from "@/context/context";
 import { executeCode } from "@/lib";
-import { BrainCircuit, CloudCheck, Sparkles } from "lucide-react";
+import { CloudCheck, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BiSolidLeftArrow } from "react-icons/bi";
 import { FilePlus , X } from "lucide-react";
@@ -33,6 +33,8 @@ export default function CodeEditor() {
     const [success, setSuccess] = useState(false);
     const [userId, setUserId] = useState<string>();
     const [aiFixLoading, setAIFixLoading] = useState(false);
+    const [aiFixTopic, setAIFixTopic] = useState("");
+    const [isAIFixModelOpen, setIsAIFixModelOpen] = useState(false);
     
 
     const handleRunCode = async () => {
@@ -124,8 +126,11 @@ export default function CodeEditor() {
 
             ${code}
             --------
-            The actual output is:
+            The output is:
             ${output}
+            --------
+            The Code is about:
+            ${aiFixTopic}
             --------
             Your task:
             - Identify and fix mistakes in the student's code.
@@ -163,6 +168,7 @@ export default function CodeEditor() {
             }
         } finally {
             setAIFixLoading(false);
+            setIsAIFixModelOpen(false);
         }
     }
     
@@ -214,9 +220,9 @@ export default function CodeEditor() {
 
                 <div className="w-full bg-slate-900 flex items-center justify-center mb-2 gap-x-2">
                     <button 
-                        onClick={handleFixCode}
+                        onClick={() => setIsAIFixModelOpen(true)} 
                         disabled={aiFixLoading}
-                        className=" w-26 h-10 border-1 disabled:cursor-no-drop border-yellow-600 hover:bg-yellow-500 shadow-sm shadow-yellow-500 flex items-center justify-center gap-x-2 rounded-md text-yellow-500 hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
+                        className=" w-26 h-10 border-1 disabled:cursor-no-drop border-yellow-600 hover:bg-yellow-500 shadow-2xs shadow-yellow-500 flex items-center justify-center gap-x-2 rounded-md text-yellow-500 hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
                         >
                         {aiFixLoading ? (
                             <Loader color={"yellow-500"} />
@@ -325,6 +331,68 @@ export default function CodeEditor() {
                                 >
                                     {addBlogLoading && <Loader color={"#fff"} />}
                                     {success ? "Note Saved!" : "Save Note"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {isAIFixModelOpen && (
+                    <div className="fixed inset-0 flex justify-center items-center bg-black/60 backdrop-blur-sm z-50 animate-fadeIn">
+                        <div className="bg-gray-800 rounded-2xl shadow-2xl w-[95%] max-w-3xl p-8 relative text-white ">
+                            {/* Close Button */}
+                            <button
+                                onClick={() => setIsAIFixModelOpen(false)}
+                                className="absolute top-4 right-4 text-gray-400 hover:text-red-400 transition cursor-pointer">
+                                <X className="w-6 h-6" />
+                            </button>
+                            <div className="flex items-center gap-x-2 mb-6">
+                                <FilePlus className="w-6 h-6 text-indigo-400" strokeWidth={3} />
+                                <h2 className="text-2xl font-bold">AI Code Fixer</h2>
+                            </div>
+
+                            {/* Error Message */}
+                            {error && (
+                                <p className="text-red-400 mb-4 py-2 px-4 rounded-md text-sm bg-red-500/20">{error}</p>
+                            )}
+
+                            {/* Code */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-300 mb-1">What Does Your Code Do?</label>
+                                <textarea
+                                    value={aiFixTopic}
+                                    onChange={(e) => setAIFixTopic(e.target.value)}
+                                    className="h-20 w-full border border-gray-600 rounded-lg font-mono p-3 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    rows={6}
+                                    placeholder="Type the purpose of your code here (e.g., factorial program, searching of an element)"
+                                />
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex gap-4 mt-6">
+                                {/* Cancel */}
+                                <button
+                                    onClick={() => setIsAIFixModelOpen(false)}
+                                    className="flex-1 bg-gray-600 hover:bg-gray-500 text-white rounded-lg py-3 font-medium transition disabled:opacity-50 cursor-pointer"
+                                    disabled={loading}
+                                >
+                                    Cancel
+                                </button>
+
+                                {/* Submit */}
+                                <button
+                                    onClick={handleFixCode}
+                                    disabled={loading || success}
+                                    className={`flex-1 flex items-center justify-center gap-2 rounded-lg py-3 font-medium transition cursor-pointer
+                                        border-yellow-600 bg-yellow-600 hover:bg-yellow-500 shadow-sm shadow-yellow-500
+                                    `}
+                                >
+                                    {aiFixLoading ? (
+                                        <Loader color={"white"} />
+                                    ) : (
+                                        <Sparkles />
+                                    )}
+                                    Fix with AI
                                 </button>
                             </div>
                         </div>
