@@ -90,7 +90,7 @@ export default function VideosPage() {
     const handleGenerateQuiz = async () => {
         try {
             setLoading(true);
-
+            
             const prompt = `Create a quiz of ${quizLength} questions on the topic ${quizTopic} of ${difficultyLevel} level questions. Output format - give me only the array of objects, every object should have question, array of options, correct option's index (0 based).`;
             const res = await axios.post<GeminiResponse>("/api/gemini", {
                 prompt: prompt,
@@ -293,7 +293,8 @@ export default function VideosPage() {
                                 :
                                 <button 
                                 onClick={handleGenerateQuiz} 
-                                className="flex items-center justify-center group gap-x-3 bg-slate-300 hover:bg-slate-200 px-10 py-3 mx-20 rounded-2xl text-slate-900 font-semibold cursor-pointer transition-all duration-200">
+                                disabled={loading}
+                                className={`flex items-center justify-center group gap-x-3 bg-slate-300 hover:bg-slate-200 px-10 py-3 mx-20 rounded-2xl text-slate-900 font-semibold ${loading ? "cursor-no-drop" : "cursor-pointer"}  transition-all duration-200`}>
                                     {loading ? <Loader color={"slate-600"} /> : <BadgePlus className="group-hover:text-yellow-600 transition-all duration-200" /> }Generate Quiz
                                 </button>
                             }
