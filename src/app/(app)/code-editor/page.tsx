@@ -211,7 +211,7 @@ export default function CodeEditor() {
                         <LeftPanel />
                     </Panel>
                     
-                    <PanelResizeHandle className="w-0.5 my-auto h-15 mx-2 transition-all duration-200 bg-slate-600 hover:bg-slate-400 rounded-full" />
+                    <PanelResizeHandle className="w-0.5 my-auto h-12 mx-1 transition-all duration-200 bg-slate-600 hover:bg-slate-400 rounded-full" />
                     
                     <Panel defaultSize={50} minSize={30}>
                         <RightPanel />    
@@ -222,7 +222,7 @@ export default function CodeEditor() {
                     <button 
                         onClick={() => setIsAIFixModelOpen(true)} 
                         disabled={aiFixLoading}
-                        className=" w-26 h-10 border-1 disabled:cursor-no-drop border-yellow-600 hover:bg-yellow-500 shadow-2xs shadow-yellow-500 flex items-center justify-center gap-x-2 rounded-md text-yellow-500 hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
+                        className=" w-25 h-9 border-1 disabled:cursor-no-drop border-yellow-600 hover:bg-yellow-500 shadow-2xs shadow-yellow-500 flex items-center justify-center gap-x-2 rounded-md text-yellow-500 hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
                         >
                         {aiFixLoading ? (
                             <Loader color={"yellow-500"} />
@@ -234,7 +234,7 @@ export default function CodeEditor() {
                     <button 
                         onClick={handleRunCode} 
                         disabled={isLoading}
-                        className=" w-26 h-10 border-1 disabled:cursor-no-drop bg-green-600 border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-white hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
+                        className=" w-25 h-9 border-1 disabled:cursor-no-drop bg-green-600 border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-white hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
                         > 
                         {isLoading ? (
                             <Loader color={"white"} />
@@ -246,7 +246,7 @@ export default function CodeEditor() {
                     <button 
                         onClick={() => setIsModelOpen(true)} 
                         disabled={isLoading}
-                        className=" w-26 h-10 border-1 disabled:cursor-no-drop border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-green-500 hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
+                        className=" w-25 h-9 border-1 disabled:cursor-no-drop border-green-600 hover:bg-green-500 shadow-sm shadow-green-800 flex items-center justify-center gap-x-2 rounded-md text-green-500 hover:text-white font-semibold text-lg cursor-pointer transition-all duration-200 "
                     > 
                         <CloudCheck /> Save
                     </button>

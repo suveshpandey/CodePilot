@@ -34,17 +34,12 @@ export default function LeftPanel () {
             <div className="py-1 w-full bg-slate-700 rounded-t-[5px] px-2 flex items-center justify-between">
                 <div className="flex gap-x-3">
                     <div className="flex gap-x-1 items-center">
-                        <Code2 className="size-5 text-green-500" /> 
+                        <Code2 className="size-4 text-green-500" strokeWidth={3} /> 
                         <p className="text-md text-slate-200 font-medium">Code</p>
                     </div>
                 </div>
                 <div className="flex gap-x-4">
                     <LanguageSelector selectedLanguage={selectedLanguage} onSelectLanguage={onSelectLanguage} />    
-                    {/* <button
-                        onClick={handleCopyButton}
-                        className="flex items-center justify-center text-slate-300 hover:text-white cursor-pointer"
-                        >{isCopied ? <CopyCheck size={18} className="text-green-500" /> : <CopyIcon  size={18} /> }
-                    </button> */}
                     <button
                         onClick={handleCopyButton}
                         className="flex items-center justify-center text-slate-300 hover:text-white cursor-pointer"

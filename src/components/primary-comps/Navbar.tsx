@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
 
-type NavOptions = "code-editor" | "my-notes" | "blogs" | "videos";
+type NavOptions = "code-editor" | "my-notes" | "blogs" | "videos" | "ai-quiz";
 
 export default function Navbar() {
     const [selectedNav, setSelectedNav] = useState<NavOptions>("code-editor");
@@ -23,6 +23,7 @@ export default function Navbar() {
         else if (pathname.startsWith("/my-notes")) setSelectedNav("my-notes");
         else if (pathname.startsWith("/blogs")) setSelectedNav("blogs");
         else if (pathname.startsWith("/videos")) setSelectedNav("videos");
+        else if (pathname.startsWith("/ai-quiz")) setSelectedNav("ai-quiz");
     }, [pathname]);
 
     useEffect(() => {
@@ -49,6 +50,7 @@ export default function Navbar() {
                             { label: "My Notes", value: "my-notes" },
                             { label: "Blogs", value: "blogs" },
                             { label: "Videos", value: "videos" },
+                            { label: "AI Quiz", value: "ai-quiz" },
                         ].map((nav) => (
                             <div
                             key={nav.value}
@@ -56,8 +58,8 @@ export default function Navbar() {
                             className={`px-4 py-1 text-sm font-medium rounded-full cursor-pointer transition-all duration-200
                                 ${
                                 selectedNav === nav.value
-                                    ? "bg-indigo-500/20 text-indigo-400 border border-indigo-400"
-                                    : "text-slate-300 hover:text-indigo-300"
+                                    ? "bg-indigo-500/20 text-indigo-200 border border-indigo-400"
+                                    : "text-slate-300 border border-transparent hover:border-indigo-400"
                                 }`}
                             >
                             {nav.label}

@@ -3,18 +3,6 @@ import { NextResponse } from "next/server";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
-// route.ts
-const SYSTEM_PROMPT = `
-You are a coding tutor. Give a brief, simple, accurate explanation.
-If needed, then output code ONLY between the markers:
-***CODE_START***
-\`\`\`<language>
-<code>
-\`\`\`
-***CODE_END***
-`;
-
-
 export async function POST (req: Request) {
     try {
         const { prompt, model_name } = await req.json();
